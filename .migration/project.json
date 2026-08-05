@@ -1,0 +1,10 @@
+{
+  "type": "doc",
+  "sites": {
+    "ema-capstone": {
+      "previewOrg": "arush-asmit-adobe",
+      "previewSite": "ema-capstone",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}
