@@ -18,7 +18,7 @@ function buildUtilityBar() {
   const lang = document.createElement('a');
   lang.className = 'nav-lang';
   lang.href = '#language';
-  lang.innerHTML = '<span class="nav-lang-flag" aria-hidden="true">🇺🇸</span><span class="nav-lang-code">EN-US</span>';
+  lang.innerHTML = '<span class="nav-lang-flag" aria-hidden="true">🇺🇸</span><span class="nav-lang-code">EN-US</span><span class="nav-lang-caret" aria-hidden="true"></span>';
 
   utility.append(signIn, lang);
   return utility;
@@ -83,6 +83,33 @@ function buildTools() {
 }
 
 /**
+ * Toggles a `scrolled` class on the header once the user scrolls past a
+ * small threshold, so CSS can smoothly shrink the sticky nav. Uses
+ * requestAnimationFrame to avoid layout thrash on every scroll event.
+ * @param {Element} header The header (header-wrapper) element
+ */
+function enableShrinkOnScroll(header) {
+  const THRESHOLD = 40;
+  let ticking = false;
+
+  const update = () => {
+    const scrolled = window.scrollY > THRESHOLD;
+    header.classList.toggle('is-scrolled', scrolled);
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // set the correct state on load (e.g. when navigating to an anchor)
+  update();
+}
+
+/**
  * loads and decorates the header (WKND site chrome)
  * @param {Element} block The header block element
  */
@@ -103,4 +130,8 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(utility, nav);
   block.append(navWrapper);
+
+  // shrink the sticky header smoothly as the user scrolls
+  const header = block.closest('header') || block.parentElement;
+  if (header) enableShrinkOnScroll(header);
 }

@@ -69,25 +69,34 @@
   margin-top: 0;
 }
 
+/* description paragraph — smaller so it fits on a single line */
+.carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:not(:last-child) {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* CTA styled as a small yellow button with black text */
 .carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a {
   display: inline-block;
   margin-top: 8px;
-  padding: 10px 20px;
-  background-color: #ffce00;
+  padding: 7px 14px;
+  background-color: #ffea00;
   color: var(--text-color);
   font-weight: 700;
-  font-size: var(--body-font-size-xs);
+  font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: default;
 }
 
+/* keep the same appearance on hover/focus — no color or cursor change */
 .carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a:hover,
 .carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a:focus-visible {
-  background-color: #e6b900;
+  background-color: #ffea00;
   color: var(--text-color);
   text-decoration: none;
+  cursor: default;
 }
 
 .carousel-hero .carousel-hero-slide-indicators {
@@ -103,19 +112,19 @@
 }
 
 .carousel-hero .carousel-hero-slide-indicator button {
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   margin: 0;
   padding: 0;
   border-radius: 50%;
-  background-color: transparent;
-  border: 1px solid var(--text-color);
+  border: 0;
+  background-color: #c9c9c9;
+  cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.carousel-hero .carousel-hero-slide-indicator button:disabled,
-.carousel-hero .carousel-hero-slide-indicator button:hover,
-.carousel-hero .carousel-hero-slide-indicator button:focus-visible {
+/* active slide dot is filled dark; hover does NOT change color */
+.carousel-hero .carousel-hero-slide-indicator button:disabled {
   background-color: var(--text-color);
 }
 
@@ -183,7 +192,10 @@
 
 @media (width >= 600px) {
   .carousel-hero .carousel-hero-slide .carousel-hero-slide-content {
-    margin: 0 120px;
+    align-self: center;
+    width: 76%;
+    max-width: 1400px;
+    margin: 0;
     padding: 32px 40px 40px;
   }
 }

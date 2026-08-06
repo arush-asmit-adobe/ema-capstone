@@ -14,18 +14,19 @@ header .nav-wrapper {
   position: relative;
 }
 
-/* utility bar (black strip: sign in + language) */
+/* utility bar (black strip: sign in + language) — stays intact on scroll */
 header .nav-utility {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 32px;
-  height: 36px;
-  padding: 0 32px;
+  height: 32px;
+  padding: 0 40px;
   background-color: var(--text-color);
   color: var(--background-color);
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -34,20 +35,31 @@ header .nav-utility a:any-link {
   align-items: center;
   gap: 8px;
   color: var(--background-color);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 
 header .nav-utility a:hover {
-  color: #ffce00;
+  color: #ffea00;
 }
 
 header .nav-lang-flag {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1;
 }
 
-/* main nav row */
+/* down chevron next to EN-US */
+header .nav-lang-caret {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: -2px;
+  border-right: 1.5px solid currentcolor;
+  border-bottom: 1.5px solid currentcolor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+/* main nav row (shrinks smoothly on scroll) */
 header nav {
   box-sizing: border-box;
   display: flex;
@@ -60,24 +72,31 @@ header nav {
   padding: 16px 24px;
   font-family: var(--body-font-family);
   flex-wrap: wrap;
+  transition: min-height 0.3s ease, padding 0.3s ease;
 }
 
 @media (width >= 900px) {
   header nav {
     gap: 0 32px;
-    min-height: 84px;
+    min-height: 104px;
     padding: 0 32px;
     flex-wrap: nowrap;
+  }
+
+  header.header-wrapper.is-scrolled nav {
+    min-height: 72px;
   }
 }
 
 /* brand / WKND wordmark */
 header .nav-brand {
   font-family: var(--heading-font-family);
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1;
+  margin-left: 48px;
+  transition: font-size 0.3s ease;
 }
 
 header .nav-brand button {
@@ -121,31 +140,19 @@ header nav .nav-sections button {
   background-color: transparent;
   color: var(--text-color);
   font-family: var(--body-font-family);
-  font-size: 17px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* yellow hover state (matches carousel CTA), with a smooth lift */
+/* yellow hover state (matches carousel CTA) — color change only, no movement */
 header nav .nav-sections button:hover,
 header nav .nav-sections button:focus-visible {
-  background-color: #ffce00;
+  background-color: #ffea00;
   color: var(--text-color);
-  transform: translateY(-2px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  header nav .nav-sections button {
-    transition: background-color 0.15s ease, color 0.15s ease;
-  }
-
-  header nav .nav-sections button:hover,
-  header nav .nav-sections button:focus-visible {
-    transform: none;
-  }
 }
 
 /* tools (search) */
@@ -153,16 +160,21 @@ header nav .nav-search {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 40px;
-  padding: 0 16px;
+  height: 28px;
+  padding: 0 12px;
   background-color: var(--light-color);
+  transition: height 0.3s ease;
+}
+
+header.header-wrapper.is-scrolled nav .nav-search {
+  height: 26px;
 }
 
 header nav .nav-search-icon {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--dark-color);
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--dark-color);
   border-radius: 50%;
   position: relative;
   flex: 0 0 auto;
@@ -171,10 +183,10 @@ header nav .nav-search-icon {
 header nav .nav-search-icon::after {
   content: '';
   position: absolute;
-  right: -5px;
-  bottom: -4px;
-  width: 7px;
-  height: 2px;
+  right: -4px;
+  bottom: -3px;
+  width: 6px;
+  height: 1.5px;
   background-color: var(--dark-color);
   transform: rotate(45deg);
 }
@@ -183,7 +195,7 @@ header nav .nav-search input {
   border: 0;
   background: transparent;
   padding: 0;
-  font-size: 15px;
+  font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--dark-color);
@@ -192,6 +204,6 @@ header nav .nav-search input {
 
 @media (width >= 900px) {
   header nav .nav-search {
-    width: 220px;
+    width: 150px;
   }
 }
