@@ -48,8 +48,15 @@ export default function parse(element, { document }) {
       // Walk all descendants and keep only leaf content nodes (paragraphs,
       // headings, images, lists), dropping the repeated fragment title and the
       // empty aem-Grid layout spacer wrappers.
+      //
+      // Content-fragment rich text sometimes wraps a paragraph in a bare <div>
+      // instead of a <p> (e.g. the cycling-tuscany "What to Bring" intro). We
+      // include such text-bearing leaf <div>s and normalise them to <p> so no
+      // prose is dropped — but only "leaf" divs (no element children other than
+      // inline formatting), to avoid re-capturing layout/grid wrappers whose
+      // real content we already collect separately.
       const nodes = Array.from(
-        body.querySelectorAll('p, img, ul, ol, h1, h2, h3, h4, h5, h6, b, strong'),
+        body.querySelectorAll('p, img, ul, ol, h1, h2, h3, h4, h5, h6, b, strong, div'),
       );
 
       const seen = new Set();
@@ -62,6 +69,20 @@ export default function parse(element, { document }) {
           if (seen.has(node)) return;
           seen.add(node);
           contentCell.push(node);
+          return;
+        }
+
+        // Handle <div>s: keep only text-bearing "leaf" divs (no block-level
+        // element children), and rewrite them as <p> so they import as prose.
+        // This skips empty aem-Grid spacers and outer layout wrappers.
+        if (node.tagName === 'DIV') {
+          if (node.querySelector('div, p, ul, ol, img, h1, h2, h3, h4, h5, h6')) return;
+          const divText = (node.textContent || '').replace(/ /g, ' ').trim();
+          if (!divText) return;
+          const p = document.createElement('p');
+          p.innerHTML = node.innerHTML;
+          seen.add(node);
+          contentCell.push(p);
           return;
         }
 

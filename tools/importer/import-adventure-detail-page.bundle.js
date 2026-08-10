@@ -99,7 +99,7 @@ var CustomImportScript = (() => {
       if (panel) {
         const body = panel.querySelector(".cmp-contentfragment__elements") || panel;
         const nodes = Array.from(
-          body.querySelectorAll("p, img, ul, ol, h1, h2, h3, h4, h5, h6, b, strong")
+          body.querySelectorAll("p, img, ul, ol, h1, h2, h3, h4, h5, h6, b, strong, div")
         );
         const seen = /* @__PURE__ */ new Set();
         nodes.forEach((node) => {
@@ -108,6 +108,16 @@ var CustomImportScript = (() => {
             if (seen.has(node)) return;
             seen.add(node);
             contentCell.push(node);
+            return;
+          }
+          if (node.tagName === "DIV") {
+            if (node.querySelector("div, p, ul, ol, img, h1, h2, h3, h4, h5, h6")) return;
+            const divText = (node.textContent || "").replace(/ /g, " ").trim();
+            if (!divText) return;
+            const p = document.createElement("p");
+            p.innerHTML = node.innerHTML;
+            seen.add(node);
+            contentCell.push(p);
             return;
           }
           if ((node.tagName === "B" || node.tagName === "STRONG") && node.closest("p")) return;
