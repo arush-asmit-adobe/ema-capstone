@@ -82,21 +82,24 @@ function decorateAuthored(block) {
 
 /**
  * Determine whether this block should be populated dynamically from the query
- * index, and with which article-path filter. The section heading is the signal:
- *   - "Recent Articles"        -> homepage magazine teaser  -> /magazine/
- *   - "Where do you want to go" -> homepage adventures grid  -> /adventures/
- * Any other card grid (e.g. the magazine page's authored "All Articles") keeps
- * its authored cards, which already carry the correct set and order.
+ * index, and with which article-path filter + limit. The section heading is the
+ * signal:
+ *   - "Recent Articles"         -> homepage magazine teaser  -> /magazine/ (top 4)
+ *   - "Where do you want to go" -> homepage adventures grid  -> /adventures/ (top 4)
+ *   - "All Articles"            -> magazine full listing      -> /magazine/ (all)
+ * Any other card grid keeps its authored cards.
  * @param {Element} block
- * @returns {string|null} path segment to filter on, or null for authored mode
+ * @returns {{filter:string, limit:number}|null} filter config, or null for
+ *   authored mode. `limit` of Infinity means render every matching record.
  */
 function getDynamicFilter(block) {
   const section = block.closest('.section');
   const heading = section && section.querySelector('.default-content-wrapper h2, .default-content-wrapper h3');
   if (!heading) return null;
   const text = heading.textContent;
-  if (/recent articles/i.test(text)) return '/magazine/';
-  if (/where do you want to go/i.test(text)) return '/adventures/';
+  if (/recent articles/i.test(text)) return { filter: '/magazine/', limit: 4 };
+  if (/where do you want to go/i.test(text)) return { filter: '/adventures/', limit: 4 };
+  if (/all articles/i.test(text)) return { filter: '/magazine/', limit: Infinity };
   return null;
 }
 
@@ -126,16 +129,16 @@ function decorateSectionCta(block) {
  * @param {Element} block The block element
  */
 export default async function decorate(block) {
-  const filter = getDynamicFilter(block);
+  const config = getDynamicFilter(block);
 
   // Non-dynamic instances (e.g. adventures grid) keep their authored cards.
-  if (!filter) {
+  if (!config) {
     decorateAuthored(block);
     decorateSectionCta(block);
     return;
   }
 
-  const limit = block.children.length || 4;
+  const { filter, limit } = config;
 
   try {
     const resp = await fetch(QUERY_INDEX);
