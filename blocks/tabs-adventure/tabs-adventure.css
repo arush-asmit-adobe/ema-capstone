@@ -1,16 +1,17 @@
 /*
  * tabs-adventure — adventure detail tab switcher (Overview / Itinerary / What to Bring).
- * Matches the WKND source: a row of dark (#202020) tab buttons with white
- * uppercase labels, above a plain content panel (no border/background), body
- * text at 18px.
+ * Matches the WKND source: only the ACTIVE tab is a dark (#202020) chip with a
+ * white uppercase label; inactive tabs are transparent with dark text. The
+ * tabs sit above a plain content panel (no border/background) with airy 18px
+ * body text.
  */
 
 .tabs-adventure .tabs-adventure-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 0;
   max-width: 100%;
-  margin-bottom: 24px;
+  margin: 18px 0;
 }
 
 .tabs-adventure .tabs-adventure-list button {
@@ -19,30 +20,33 @@
   border: 0;
   border-radius: 0;
   padding: 8px 16px;
-  background-color: #202020;
-  color: #fff;
+  background-color: transparent;
+  color: #202020;
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 400;
   line-height: 1.4;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .tabs-adventure .tabs-adventure-list button p {
   margin: 0;
 }
 
+/* active tab: dark chip, white label */
 .tabs-adventure .tabs-adventure-list button[aria-selected='true'] {
   background-color: #202020;
+  color: #fff;
   cursor: default;
 }
 
-.tabs-adventure .tabs-adventure-list button:hover,
-.tabs-adventure .tabs-adventure-list button:focus-visible {
-  background-color: #3d3d3d;
+/* hover on an inactive tab: subtle grey wash */
+.tabs-adventure .tabs-adventure-list button:not([aria-selected='true']):hover,
+.tabs-adventure .tabs-adventure-list button:not([aria-selected='true']):focus-visible {
+  background-color: #ebebeb;
 }
 
 /* content panel: plain, no border/background */
@@ -50,7 +54,7 @@
   padding: 0;
   border: 0;
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 2.5;
   color: #202020;
 }
 
@@ -60,7 +64,7 @@
 
 /* stylelint-disable-next-line no-descending-specificity */
 .tabs-adventure .tabs-adventure-panel p {
-  margin: 0 0 20px;
+  margin: 0 0 13.5px;
 }
 
 /* in-body images span the panel width */

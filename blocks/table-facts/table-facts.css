@@ -18,11 +18,13 @@
   margin: 18px 0;
 }
 
-/* each fact row stacks label-above-value, indented 18px like the source */
+/* each fact row stacks label-above-value, indented 18px behind a 5px light-grey
+   left rule (source: border-left 5px #ebebeb) */
 .table-facts.block table tbody tr {
   display: block;
   padding: 0 18px;
   margin-bottom: 22.5px;
+  border-left: 5px solid #ebebeb;
 }
 
 .table-facts.block table tbody td {
