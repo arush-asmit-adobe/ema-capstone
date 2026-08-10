@@ -1,3 +1,71 @@
+// eslint-disable-next-line import/no-unresolved
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+const CAROUSEL_INDEX = '/carousel-index.json';
+
+/**
+ * Build one authored-shaped carousel row from a carousel-index record.
+ * The row matches the structure createSlide() expects: an image column
+ * followed by a content column (heading + description + CTA link).
+ * @param {{title:string,description:string,image:string,imageAlt:string,cta:string}} slide
+ * @param {number} idx slide index (used for a unique heading id + eager LCP image)
+ * @returns {HTMLDivElement}
+ */
+function buildDynamicRow(slide, idx) {
+  const row = document.createElement('div');
+
+  const imageCol = document.createElement('div');
+  if (slide.image) {
+    // first slide is the LCP candidate → load eagerly at a large width
+    const pic = createOptimizedPicture(slide.image, slide.imageAlt || slide.title, idx === 0, [{ width: '2000' }]);
+    imageCol.append(pic);
+  }
+
+  const contentCol = document.createElement('div');
+  const heading = document.createElement('h2');
+  heading.id = `carousel-hero-dynamic-slide-${idx}`;
+  heading.textContent = slide.title || '';
+  contentCol.append(heading);
+  if (slide.description) {
+    const desc = document.createElement('p');
+    desc.textContent = slide.description;
+    contentCol.append(desc);
+  }
+  const ctaP = document.createElement('p');
+  const cta = document.createElement('a');
+  cta.href = slide.ctaHref || '#';
+  cta.textContent = slide.cta || 'View Trips';
+  ctaP.append(cta);
+  contentCol.append(ctaP);
+
+  row.append(imageCol, contentCol);
+  return row;
+}
+
+/**
+ * Replace the carousel's authored rows with slides built from the carousel
+ * index (a curated sheet of hero slides). On any failure (index missing/empty)
+ * the authored rows are left untouched so the carousel still renders. Runs
+ * before the main decoration pipeline.
+ * @param {Element} block
+ */
+async function applyDynamicSlides(block) {
+  try {
+    const resp = await fetch(CAROUSEL_INDEX);
+    if (!resp.ok) throw new Error(`carousel-index ${resp.status}`);
+    const json = await resp.json();
+    const items = json.data || [];
+    if (!items.length) throw new Error('no carousel entries');
+
+    block.textContent = '';
+    items.forEach((slide, idx) => block.append(buildDynamicRow(slide, idx)));
+  } catch (e) {
+    // graceful fallback: keep the authored slides if the index is unavailable
+    // eslint-disable-next-line no-console
+    console.warn('carousel-hero: falling back to authored slides —', e.message);
+  }
+}
+
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel-hero');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
@@ -79,15 +147,16 @@ function createSlide(row, slideIndex, carouselId) {
     slide.append(column);
   });
 
-  // convert the CTA link into an actual button pointing to '#'
+  // convert the CTA link into an actual button that navigates to its href
   const cta = slide.querySelector('.carousel-hero-slide-content p:last-child a');
   if (cta) {
+    const href = cta.getAttribute('href') || '#';
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'carousel-hero-cta';
     button.textContent = cta.textContent;
     button.addEventListener('click', () => {
-      window.location.href = '#';
+      window.location.href = href;
     });
     cta.replaceWith(button);
   }
@@ -104,6 +173,10 @@ let carouselId = 0;
 export default async function decorate(block) {
   carouselId += 1;
   block.setAttribute('id', `carousel-hero-${carouselId}`);
+
+  // Populate slides dynamically from the query index (falls back to authored).
+  await applyDynamicSlides(block);
+
   const rows = block.querySelectorAll(':scope > div');
   const isSingleSlide = rows.length < 2;
 

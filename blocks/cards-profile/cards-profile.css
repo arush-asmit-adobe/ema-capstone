@@ -147,3 +147,66 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* ============================================================
+   Article-page variant: single author byline card.
+   On a magazine article (main:has(.quote-pull)) the same cards-profile
+   block renders as a compact horizontal byline — small round avatar on the
+   left, name + occupation beside it, social icons pushed to the right —
+   preceded by a full-width rule. Scoped so the About Us grids are untouched.
+   ============================================================ */
+main:has(.quote-pull) .cards-profile {
+  border-top: 1px solid #ebebeb;
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+main:has(.quote-pull) .cards-profile > ul {
+  display: block;
+  margin: 0;
+}
+
+main:has(.quote-pull) .cards-profile > ul > li {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0;
+  text-align: left;
+}
+
+/* small circular avatar */
+main:has(.quote-pull) .cards-profile .cards-profile-card-image {
+  width: 60px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+/* name + occupation sit next to the avatar; social strip pushed to the right */
+main:has(.quote-pull) .cards-profile .cards-profile-card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+}
+
+main:has(.quote-pull) .cards-profile .cards-profile-card-body h3 {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 24px;
+}
+
+/* occupation line under the name */
+main:has(.quote-pull) .cards-profile .cards-profile-card-body h5 {
+  flex: 1 0 100%;
+  margin: 2px 0 0;
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #696969;
+}
+
+/* social icons pushed to the far right, vertically centered with the name */
+main:has(.quote-pull) .cards-profile .cards-profile-social {
+  margin: 0 0 0 auto;
+}

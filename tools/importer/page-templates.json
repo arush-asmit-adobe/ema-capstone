@@ -312,6 +312,67 @@
           ]
         }
       ]
+    },
+    {
+      "name": "article-page",
+      "urls": [
+        "https://wknd.site/us/en/magazine/western-australia.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/magazine/western-australia.html",
+      "coverageGaps": [],
+      "description": "WKND magazine article detail page: full-width masthead lead photo, article body (title, byline, intro, a grey pull-quote callout, and three underlined-H2 + image + paragraph units), and an author byline profile card at the end.",
+      "blocks": [
+        {
+          "name": "quote-pull",
+          "instances": [
+            ".cmp-text:has(blockquote)"
+          ]
+        },
+        {
+          "name": "cards-profile",
+          "instances": [
+            ".cmp-byline"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Masthead Lead Image",
+          "selector": "#image-de01fa9d3f",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "#image-de01fa9d3f"
+          ]
+        },
+        {
+          "id": "section-2",
+          "name": "Article Body",
+          "selector": "#container-fc6c2f500a",
+          "style": null,
+          "blocks": [
+            "quote-pull"
+          ],
+          "defaultContent": [
+            "#title-6782e190a5",
+            "#title-57a780e4c1",
+            "#title-4fc4680be1",
+            "#title-90a292b7fd",
+            "#title-7b99fe2b49"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Author Byline Card",
+          "selector": ".cmp-byline",
+          "style": null,
+          "blocks": [
+            "cards-profile"
+          ],
+          "defaultContent": []
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,46 @@
+{
+  "variantName": "quote-pull",
+  "baseBlock": "quote",
+  "version": "1.0.0",
+  "created": "2026-08-10T06:37:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/magazine/western-australia.html",
+    "originPage": "WKND magazine article: Western Australia by Camper Van",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "grey",
+    "density": "spacious",
+    "purpose": "pull-quote",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "quote + attribution",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "in-body pull-quotes / callout boxes within long-form article content",
+      "definition-style or highlighted quote + short attribution",
+      "grouped, background-boxed quotations that break up running prose"
+    ],
+    "notSuitableFor": [
+      "plain inline quotations that read as normal paragraph text (use default content)",
+      "customer testimonials with a photo/avatar (use a cards/profile variant)",
+      "hero or banner call-outs with a CTA (use hero-banner)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": [],
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "No existing 'quote' base-block variant exists in this project (prior migrations used carousel, columns, cards, hero, tabs, accordion base blocks only). This article's grey pull-quote callout box (blockquote + one-line attribution) maps 1:1 to the Block Collection 'quote' block's 'Quote (with attribution)' variant, so a first quote variant is created from the vanilla quote block."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/magazine/western-australia"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-10T06:37:00.000Z",
+    "notes": "Definition-style pull-quote 'Wanderlust \\wandelust\\ a strong desire to travel.' with attribution 'noun', mid-body in the Western Australia camper-van article. Vanilla quote JS/CSS scaffolded; visual polish (grey box background) applied later by the design expert."
+  }
+}

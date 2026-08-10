@@ -63,9 +63,9 @@
     "reason": "Both existing cards variants score well below the 80% threshold. The About Us grids are a people/team pattern - circular avatar + name + role tagline + a strip of 3 social icon links, with no description text and no body CTA - which is structurally distinct from cards-article (landscape image + title + description) and cards-promo (title + description + CTA + image-at-bottom). A dedicated 'cards-profile' variant is warranted."
   },
   "usage": {
-    "pagesUsing": ["/us/en/about-us"],
-    "reuseCount": 1,
-    "lastUsed": "2026-08-09T10:16:00.000Z",
-    "notes": "Used for BOTH card grids on the About Us page: the 'Our Contributors' grid (4 people) and the 'WKND Guides' grid (3 people). Both grids share the identical circular-avatar people-card structure."
+    "pagesUsing": ["/us/en/about-us", "/us/en/magazine/western-australia"],
+    "reuseCount": 2,
+    "lastUsed": "2026-08-10T06:37:00.000Z",
+    "notes": "Used for BOTH card grids on the About Us page: the 'Our Contributors' grid (4 people) and the 'WKND Guides' grid (3 people). Reused on the Western Australia magazine article for the single end-of-article author byline card (Sofia Sjoberg: circular avatar + name + occupation + 3 social icon links) - identical people/profile structure, just one card. Similarity vs current context ~1.0 (colorScheme=light, purpose=team/profile, imagePattern=avatar, structure=circular image + name + role + social links all match), well above the 0.8 reuse threshold."
   }
 }

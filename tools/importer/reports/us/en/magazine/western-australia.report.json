@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://wknd.site/us/en/magazine/western-australia.html",
+  "path": "us/en/magazine/western-australia",
+  "timestamp": "2026-08-10T06:51:44.323Z",
+  "title": "Western Australia",
+  "template": "article-page",
+  "blocks": [
+    "quote-pull",
+    "cards-profile"
+  ]
+}
