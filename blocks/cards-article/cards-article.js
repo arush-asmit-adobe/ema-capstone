@@ -3,6 +3,20 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 const QUERY_INDEX = '/query-index.json';
 
 /**
+ * Resolve an authored card link. Only magazine article pages (/magazine/…) are
+ * migrated, so wire those to their real destination — dropping a trailing .html
+ * and mirroring the /content prefix when previewed locally. Any other target
+ * (e.g. not-yet-migrated /adventures/… detail pages) stays '#'.
+ * @param {string} rawHref
+ * @returns {string}
+ */
+function resolveArticleHref(rawHref) {
+  const href = (rawHref || '').replace(/\.html($|[?#])/, '$1');
+  if (!href.includes('/magazine/')) return '#';
+  return window.location.pathname.startsWith('/content/') ? `/content${href}` : href;
+}
+
+/**
  * Build a single card <li> from an article record.
  * @param {{path:string,title:string,description:string,image:string}} article
  * @returns {HTMLLIElement}
@@ -57,8 +71,8 @@ function decorateAuthored(block) {
     const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
     img.closest('picture').replaceWith(optimizedPic);
   });
-  // point every card link to '#' for now
-  ul.querySelectorAll('a[href]').forEach((a) => { a.href = '#'; });
+  // wire each card link to its authored article destination (env-aware)
+  ul.querySelectorAll('a[href]').forEach((a) => { a.href = resolveArticleHref(a.getAttribute('href')); });
   block.textContent = '';
   block.append(ul);
 }

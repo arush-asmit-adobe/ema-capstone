@@ -27,30 +27,11 @@
   color: #202020;
 }
 
-.quote-pull blockquote .quote-pull-quotation > :first-child {
-  text-indent: -0.5ch;
-}
-
-.quote-pull blockquote .quote-pull-quotation p:first-child::before {
-  content: '“';
-  line-height: 0;
-}
-
-.quote-pull blockquote .quote-pull-quotation p:last-child::after {
-  content: '”';
-  line-height: 0;
-}
-
 .quote-pull blockquote .quote-pull-attribution {
   margin: 12px 0 0;
   text-align: left;
   font-size: 18px;
   color: #202020;
-}
-
-.quote-pull blockquote .quote-pull-attribution p:first-child::before {
-  content: '—';
-  padding-right: 0.5ch;
 }
 
 /* ---- plain variant: inline blockquote (no grey callout box) ----
@@ -72,14 +53,4 @@
   font-size: 18px;
   line-height: 1.5;
   color: #202020;
-}
-
-/* the plain quote text already carries literal quote marks — don't add curly ones */
-.quote-pull.plain blockquote .quote-pull-quotation > :first-child {
-  text-indent: 0;
-}
-
-.quote-pull.plain blockquote .quote-pull-quotation p:first-child::before,
-.quote-pull.plain blockquote .quote-pull-quotation p:last-child::after {
-  content: none;
 }
