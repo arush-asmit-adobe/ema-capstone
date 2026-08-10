@@ -13,12 +13,16 @@
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
+
+  /* source: the fact-sheet (dl) carries 18px vertical margin */
+  margin: 18px 0;
 }
 
-/* each fact row stacks label-above-value */
+/* each fact row stacks label-above-value, indented 18px like the source */
 .table-facts.block table tbody tr {
   display: block;
-  margin-bottom: 22px;
+  padding: 0 18px;
+  margin-bottom: 22.5px;
 }
 
 .table-facts.block table tbody td {
@@ -31,8 +35,9 @@
   margin: 0;
 }
 
-/* first cell = label: small grey uppercase */
+/* first cell = label: small grey uppercase, 12px of breathing room above */
 .table-facts.block table tbody td:first-child {
+  padding-top: 12px;
   font-family: var(--body-font-family);
   font-size: 12px;
   font-weight: 400;
@@ -41,12 +46,14 @@
   color: #696969;
 }
 
-/* second cell = value: bold dark */
+/* second cell = value: bold dark, uppercase (source renders values uppercase) */
 .table-facts.block table tbody td:last-child {
+  padding-top: 7px;
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
+  text-transform: uppercase;
   color: #202020;
 }
 
