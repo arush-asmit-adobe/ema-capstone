@@ -47,15 +47,15 @@ function buildCard(record) {
   li.dataset.categories = splitCategories(record.category).join(',');
   const href = resolveArticleHref(record.path);
 
+  // Image is not wrapped in its own anchor — the single title link below is
+  // "stretched" over the whole card (see CSS), so one focusable link covers
+  // the entire card surface (image included) with a single tab stop.
   const imageDiv = document.createElement('div');
   imageDiv.className = 'cards-article-card-image';
-  const imgLink = document.createElement('a');
-  imgLink.href = href;
   if (record.image) {
     const pic = createOptimizedPicture(record.image, record.title, false, [{ width: '750' }]);
-    imgLink.append(pic);
+    imageDiv.append(pic);
   }
-  imageDiv.append(imgLink);
 
   const body = document.createElement('div');
   body.className = 'cards-article-card-body';
@@ -63,6 +63,12 @@ function buildCard(record) {
   const titleLink = document.createElement('a');
   titleLink.href = href;
   titleLink.textContent = record.title;
+  // Only real destinations become a whole-card link; unmigrated ('#') targets
+  // render as plain text so the card isn't a dead full-surface click target.
+  if (href !== '#') {
+    titleLink.className = 'cards-article-card-link';
+    li.classList.add('cards-article-card-clickable');
+  }
   h3.append(titleLink);
   body.append(h3);
   if (record.description) {
@@ -95,8 +101,27 @@ function decorateAuthored(block) {
     const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
     img.closest('picture').replaceWith(optimizedPic);
   });
-  // wire each card link to its authored destination (env-aware)
-  ul.querySelectorAll('a[href]').forEach((a) => { a.href = resolveArticleHref(a.getAttribute('href')); });
+  // Consolidate each card to a single stretched link. Authored cards carry two
+  // anchors to the same page (an image link + a title link); unwrap the image
+  // anchor (keep the picture) so only the title link remains, then stretch it
+  // over the whole card for a one-tab-stop clickable surface.
+  [...ul.children].forEach((li) => {
+    const anchors = [...li.querySelectorAll('a[href]')];
+    const titleLink = li.querySelector('h3 a[href]') || anchors[anchors.length - 1];
+    anchors.forEach((a) => {
+      const href = resolveArticleHref(a.getAttribute('href'));
+      if (a === titleLink) {
+        a.href = href;
+      } else {
+        // image (or duplicate) anchor → unwrap, preserving its contents
+        a.replaceWith(...a.childNodes);
+      }
+    });
+    if (titleLink && titleLink.getAttribute('href') !== '#') {
+      titleLink.classList.add('cards-article-card-link');
+      li.classList.add('cards-article-card-clickable');
+    }
+  });
   block.textContent = '';
   block.append(ul);
 }

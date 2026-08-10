@@ -56,6 +56,25 @@
   cursor: pointer;
 }
 
+/* whole-card clickable: the single title link is stretched over the entire
+   card via ::after, giving one focusable tab-stop for the whole surface */
+.cards-article > ul > li.cards-article-card-clickable {
+  position: relative;
+}
+
+.cards-article .cards-article-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* visible focus ring on the whole card when the stretched link is focused */
+.cards-article .cards-article-card-link:focus-visible::after {
+  outline: 2px solid #202020;
+  outline-offset: 2px;
+}
+
 /* image */
 .cards-article .cards-article-card-image {
   line-height: 0;
