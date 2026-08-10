@@ -118,21 +118,26 @@ export default async function decorate(block) {
 
   let slideIndicators;
   if (!isSingleSlide) {
-    const slideIndicatorsNav = document.createElement('nav');
-    slideIndicatorsNav.setAttribute('aria-label', 'Carousel Slide Controls');
+    // Control strip below the image (source layout): centered dot indicators
+    // with the prev/next arrows floated to the far right — NOT overlaid on
+    // the image.
+    const controls = document.createElement('nav');
+    controls.classList.add('carousel-mini-controls');
+    controls.setAttribute('aria-label', 'Carousel Slide Controls');
+
     slideIndicators = document.createElement('ol');
     slideIndicators.classList.add('carousel-mini-slide-indicators');
-    slideIndicatorsNav.append(slideIndicators);
-    block.append(slideIndicatorsNav);
+    controls.append(slideIndicators);
 
     const slideNavButtons = document.createElement('div');
     slideNavButtons.classList.add('carousel-mini-navigation-buttons');
     slideNavButtons.innerHTML = `
-      <button type="button" class= "slide-prev" aria-label="Previous Slide"></button>
+      <button type="button" class="slide-prev" aria-label="Previous Slide"></button>
       <button type="button" class="slide-next" aria-label="Next Slide"></button>
     `;
+    controls.append(slideNavButtons);
 
-    container.append(slideNavButtons);
+    block.append(controls);
   }
 
   rows.forEach((row, idx) => {
