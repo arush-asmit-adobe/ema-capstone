@@ -10,6 +10,67 @@ import tabsAdventureParser from './parsers/tabs-adventure.js';
 import cleanupTransformer from './transformers/wknd-cleanup.js';
 import sectionsTransformer from './transformers/wknd-sections.js';
 
+// Per-adventure taxonomy the source exposes only via its category tabs (not in
+// page <meta>). Keyed by URL slug. `category` drives the Current Adventures
+// category tabs; `featured` (1-based rank) drives the homepage "Where do you
+// want to go?" curated order. These are emitted as page metadata below so the
+// published query index carries them.
+const ADVENTURE_META = {
+  'bali-surf-camp': { category: 'Surfing', featured: '' },
+  'beervana-portland': { category: 'Travel', featured: '' },
+  'climbing-new-zealand': { category: 'Climbing', featured: '' },
+  'colorado-rock-climbing': { category: 'Climbing', featured: '' },
+  'cycling-southern-utah': { category: '', featured: '' },
+  'cycling-tuscany': { category: 'Cycling, Travel', featured: '' },
+  'downhill-skiing-wyoming': { category: 'Skiing', featured: '' },
+  'gastronomic-marais-tour': { category: 'Travel', featured: '' },
+  'napa-wine-tasting': { category: 'Travel', featured: '' },
+  'riverside-camping-australia': { category: 'Travel', featured: '' },
+  'ski-touring-mont-blanc': { category: 'Skiing', featured: '' },
+  'surf-camp-costa-rica': { category: 'Surfing', featured: '' },
+  'tahoe-skiing': { category: 'Skiing', featured: '4' },
+  'west-coast-cycling': { category: 'Cycling', featured: '3' },
+  'whistler-mountain-biking': { category: 'Cycling', featured: '2' },
+  'yosemite-backpacking': { category: 'Travel', featured: '1' },
+};
+
+/**
+ * Append Category / Featured rows to the page's Metadata block so they land in
+ * <head> as <meta> tags and are picked up by helix-query.yaml. Runs after
+ * WebImporter.rules.createMetadata has created the block.
+ * @param {Element} main
+ * @param {Document} document
+ * @param {string} slug URL slug of the adventure (e.g. 'bali-surf-camp')
+ */
+function appendAdventureMetadata(main, document, slug) {
+  const meta = ADVENTURE_META[slug];
+  if (!meta) return;
+
+  // Find the Metadata block createMetadata just appended (last table whose
+  // first cell reads "Metadata").
+  const tables = [...main.querySelectorAll('table')];
+  const metaTable = tables.reverse().find((t) => {
+    const first = t.querySelector('tr td, tr th');
+    return first && /^metadata$/i.test((first.textContent || '').trim());
+  });
+  if (!metaTable) return;
+  const tbody = metaTable.querySelector('tbody') || metaTable;
+
+  const addRow = (key, value) => {
+    if (value === undefined || value === null || `${value}`.trim() === '') return;
+    const tr = document.createElement('tr');
+    const k = document.createElement('td');
+    k.textContent = key;
+    const v = document.createElement('td');
+    v.textContent = value;
+    tr.append(k, v);
+    tbody.append(tr);
+  };
+
+  addRow('category', meta.category);
+  addRow('featured', meta.featured);
+}
+
 /**
  * Adventure-detail-page-specific cleanup: strip auxiliary chrome that only
  * appears on adventure detail pages and is auto-populated (not authorable
@@ -217,6 +278,14 @@ export default {
     const hr = document.createElement('hr');
     main.appendChild(hr);
     WebImporter.rules.createMetadata(main, document);
+
+    // 5b. Add per-adventure category / featured metadata (drives the Current
+    // Adventures category tabs and the homepage curated order via the query
+    // index). Slug is the last path segment of the source URL.
+    const slug = new URL(params.originalURL).pathname
+      .replace(/\/$/, '').replace(/\.html$/, '').split('/').pop();
+    appendAdventureMetadata(main, document, slug);
+
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 

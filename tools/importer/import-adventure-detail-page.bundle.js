@@ -215,6 +215,47 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/import-adventure-detail-page.js
+  var ADVENTURE_META = {
+    "bali-surf-camp": { category: "Surfing", featured: "" },
+    "beervana-portland": { category: "Travel", featured: "" },
+    "climbing-new-zealand": { category: "Climbing", featured: "" },
+    "colorado-rock-climbing": { category: "Climbing", featured: "" },
+    "cycling-southern-utah": { category: "", featured: "" },
+    "cycling-tuscany": { category: "Cycling, Travel", featured: "" },
+    "downhill-skiing-wyoming": { category: "Skiing", featured: "" },
+    "gastronomic-marais-tour": { category: "Travel", featured: "" },
+    "napa-wine-tasting": { category: "Travel", featured: "" },
+    "riverside-camping-australia": { category: "Travel", featured: "" },
+    "ski-touring-mont-blanc": { category: "Skiing", featured: "" },
+    "surf-camp-costa-rica": { category: "Surfing", featured: "" },
+    "tahoe-skiing": { category: "Skiing", featured: "4" },
+    "west-coast-cycling": { category: "Cycling", featured: "3" },
+    "whistler-mountain-biking": { category: "Cycling", featured: "2" },
+    "yosemite-backpacking": { category: "Travel", featured: "1" }
+  };
+  function appendAdventureMetadata(main, document, slug) {
+    const meta = ADVENTURE_META[slug];
+    if (!meta) return;
+    const tables = [...main.querySelectorAll("table")];
+    const metaTable = tables.reverse().find((t) => {
+      const first = t.querySelector("tr td, tr th");
+      return first && /^metadata$/i.test((first.textContent || "").trim());
+    });
+    if (!metaTable) return;
+    const tbody = metaTable.querySelector("tbody") || metaTable;
+    const addRow = (key, value) => {
+      if (value === void 0 || value === null || `${value}`.trim() === "") return;
+      const tr = document.createElement("tr");
+      const k = document.createElement("td");
+      k.textContent = key;
+      const v = document.createElement("td");
+      v.textContent = value;
+      tr.append(k, v);
+      tbody.append(tr);
+    };
+    addRow("category", meta.category);
+    addRow("featured", meta.featured);
+  }
   function adventureCleanupTransformer(hookName, element) {
     if (hookName !== "beforeTransform") return;
     element.querySelectorAll(".cmp-title").forEach((t) => {
@@ -372,6 +413,8 @@ var CustomImportScript = (() => {
       const hr = document.createElement("hr");
       main.appendChild(hr);
       WebImporter.rules.createMetadata(main, document);
+      const slug = new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "").split("/").pop();
+      appendAdventureMetadata(main, document, slug);
       WebImporter.rules.transformBackgroundImages(main, document);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
       const path = WebImporter.FileUtils.sanitizePath(
