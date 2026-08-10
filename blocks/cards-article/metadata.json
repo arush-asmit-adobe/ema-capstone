@@ -33,9 +33,9 @@
     ]
   },
   "usage": {
-    "pagesUsing": ["/us/en"],
-    "reuseCount": 1,
-    "lastUsed": "2026-08-05T09:32:41.000Z",
-    "notes": "Used twice on /us/en (Recent Articles grid and 'Where do you want to go?' adventures grid) - both grids share identical styling and reuse this single variant."
+    "pagesUsing": ["/us/en", "/us/en/magazine"],
+    "reuseCount": 2,
+    "lastUsed": "2026-08-08T12:06:00.000Z",
+    "notes": "Used twice on /us/en (Recent Articles grid and 'Where do you want to go?' adventures grid). Reused on /us/en/magazine for the 'All Articles' grid (.cmp-image-list) - identical component and styling (image + title + description cards)."
   }
 }

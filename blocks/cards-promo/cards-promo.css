@@ -1,0 +1,123 @@
+/* ---- section chrome (heading + sign-in prompt) ---- */
+
+/* "Members Only" heading — serif with a short yellow underline accent (matches source) */
+.cards-promo-container .default-content-wrapper h2 {
+  margin: 0 0 40px;
+  padding-bottom: 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  position: relative;
+}
+
+.cards-promo-container .default-content-wrapper h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 88px;
+  height: 4px;
+  background-color: #ffea00;
+}
+
+/* "Sign in to un-lock..." prompt */
+.cards-promo-container .default-content-wrapper p {
+  margin: 0 0 24px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #202020;
+}
+
+/* thin separator line above the members-only teasers (matches source <hr>) */
+.cards-promo {
+  border-top: 1px solid #ebebeb;
+  padding-top: 40px;
+  margin-top: 9px;
+}
+
+.cards-promo > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 24px;
+}
+
+@media (width >= 600px) {
+  .cards-promo > ul {
+    /* two promo teasers side by side, left-aligned (do not stretch full width) */
+    grid-template-columns: repeat(2, minmax(0, 360px));
+    justify-content: start;
+  }
+}
+
+.cards-promo > ul > li {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+}
+
+/* text content sits above the image (image-at-bottom teaser layout) */
+.cards-promo .cards-promo-card-body {
+  order: 1;
+}
+
+.cards-promo .cards-promo-card-body h2,
+.cards-promo .cards-promo-card-body h3 {
+  position: relative;
+  margin: 0 0 9px;
+  padding-top: 28px;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: #202020;
+}
+
+/* members-only lock badge above the title */
+.cards-promo .cards-promo-card-body h2::before,
+.cards-promo .cards-promo-card-body h3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #ffea00;
+
+  /* padlock glyph, centered */
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v3H9V7a3 3 0 0 1 3-3zm0 10a1.5 1.5 0 0 1 .75 2.8V19a.75.75 0 0 1-1.5 0v-2.2A1.5 1.5 0 0 1 12 14z"/></svg>');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 14px 14px;
+}
+
+/* description */
+.cards-promo .cards-promo-card-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #696969;
+}
+
+/* "Read More" action — gray uppercase text, not a button on the source */
+.cards-promo .cards-promo-card-body p:last-child {
+  margin: 14px 0;
+  text-transform: uppercase;
+  color: #696969;
+}
+
+/* image rendered below the text */
+.cards-promo .cards-promo-card-image {
+  order: 2;
+  line-height: 0;
+}
+
+.cards-promo > ul > li img {
+  width: 100%;
+  aspect-ratio: 1280 / 853;
+  object-fit: cover;
+  display: block;
+}

@@ -1,0 +1,55 @@
+{
+  "variantName": "cards-promo",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-08-08T12:12:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/magazine.html",
+    "originPage": "WKND Magazine listing page",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "promo",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "title + description + CTA + image (image rendered at bottom)",
+    "cards": 2,
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "small side-by-side promotional teasers (2-3 items)",
+      "members-only / gated content call-outs",
+      "title + description + CTA promo cards where the image sits below the text"
+    ],
+    "notSuitableFor": [
+      "large uniform article/adventure listing grids (use cards-article)",
+      "single featured side-by-side image + text (use columns-featured)",
+      "image-on-top article cards without a CTA"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "cards-article",
+    "score": 0.55,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "breakdown": {
+      "colorScheme": "match (light) -> +0.20",
+      "density": "mismatch (article=compact vs promo=spacious) -> 0",
+      "purpose": "mismatch (article vs promo) -> 0",
+      "imagePattern": "match (large) -> +0.20",
+      "structure": "partial (title/description/image overlap, promo adds CTA and reorders image-to-bottom) -> +0.15"
+    },
+    "reason": "Below 80% threshold vs cards-article: different purpose (gated promo vs article listing), different density, adds a CTA, and uses an image-at-bottom stacked layout. Warrants a distinct variant."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/magazine"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-08T12:12:00.000Z",
+    "notes": "Members-only 'secure' teasers (Alaskan Adventure, Fly Fishing the Amazon) on the magazine page."
+  }
+}

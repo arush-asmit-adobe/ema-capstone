@@ -76,27 +76,30 @@
 }
 
 /* CTA styled as a small yellow button with black text */
-.carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a {
+.carousel-hero .carousel-hero-slide .carousel-hero-slide-content .carousel-hero-cta {
   display: inline-block;
-  margin-top: 8px;
+  margin: 8px 0 0;
+  border: 0;
+  border-radius: 0;
   padding: 7px 14px;
   background-color: #ffea00;
   color: var(--text-color);
+  font-family: var(--body-font-family);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
 }
 
-/* keep the same appearance on hover/focus — no color or cursor change */
-.carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a:hover,
-.carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:last-child a:focus-visible {
+/* keep the same color on hover/focus — only the cursor signals it's clickable */
+.carousel-hero .carousel-hero-slide .carousel-hero-slide-content .carousel-hero-cta:hover,
+.carousel-hero .carousel-hero-slide .carousel-hero-slide-content .carousel-hero-cta:focus-visible {
   background-color: #ffea00;
   color: var(--text-color);
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .carousel-hero .carousel-hero-slide-indicators {

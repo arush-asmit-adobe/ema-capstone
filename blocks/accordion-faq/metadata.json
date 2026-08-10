@@ -1,0 +1,49 @@
+{
+  "variantName": "accordion-faq",
+  "baseBlock": "accordion",
+  "version": "1.0.0",
+  "created": "2026-08-08T18:56:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/faqs.html",
+    "originPage": "WKND FAQs page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "faq",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "question label + answer paragraph per row (7 collapsible Q&A items)",
+    "itemCount": 7,
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "FAQ / question-and-answer sections",
+      "collapsible lists of related topics presented in a compact, scannable format",
+      "help / support content where users selectively expand details"
+    ],
+    "notSuitableFor": [
+      "content that should all be visible at once without interaction",
+      "tabbed category switching between listing grids (use tabs-adventures)",
+      "rotating slides (use carousel-hero)",
+      "repeating image + title + description grids (use cards-article)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "none",
+    "score": 0,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "No existing accordion-based variant in the project (scanned blocks/ for accordion*; existing custom variants are cards-*, carousel-*, columns-*, hero-*, tabs-*). Best similarity score is 0, below the 0.8 threshold, so a new variant was created from the Block Collection 'accordion' block."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/faqs"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-08T18:56:00.000Z",
+    "notes": "WKND FAQs accordion: 7 expandable questions (audience, funding, contributing, update cadence, founding, hot-dog-sandwich, real-company) each revealing an answer paragraph. moveInstrumentation import/call removed from vanilla accordion.js since this is a doc (non-xwalk) project and that helper is not present in scripts.js. JS class names updated from base 'accordion-item*' to 'accordion-faq-item*' to match the renamed CSS."
+  }
+}

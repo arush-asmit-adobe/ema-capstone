@@ -79,6 +79,19 @@ function createSlide(row, slideIndex, carouselId) {
     slide.append(column);
   });
 
+  // convert the CTA link into an actual button pointing to '#'
+  const cta = slide.querySelector('.carousel-hero-slide-content p:last-child a');
+  if (cta) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'carousel-hero-cta';
+    button.textContent = cta.textContent;
+    button.addEventListener('click', () => {
+      window.location.href = '#';
+    });
+    cta.replaceWith(button);
+  }
+
   const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');
   if (labeledBy) {
     slide.setAttribute('aria-labelledby', labeledBy.getAttribute('id'));

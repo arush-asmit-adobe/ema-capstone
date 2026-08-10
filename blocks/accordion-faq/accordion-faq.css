@@ -1,0 +1,169 @@
+/* ============================================================
+   FAQs page layout — main content column + contact sidebar.
+   Section 1 (.accordion-faq-container) holds the heading, hero
+   image, intro paragraph and the accordion (the main column).
+   Section 2 (its next sibling) is the "Need more help?" sidebar.
+   ============================================================ */
+
+/* "FAQs" page title — serif with a short yellow underline accent */
+.accordion-faq-container .default-content-wrapper h1 {
+  margin: 0 0 14px;
+  padding-bottom: 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  color: #202020;
+  position: relative;
+}
+
+.accordion-faq-container .default-content-wrapper h1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 84px;
+  height: 3px;
+  background-color: #ffea00;
+}
+
+/* hero image fills the main column at ~3:2 */
+.accordion-faq-container .default-content-wrapper picture {
+  display: block;
+  line-height: 0;
+}
+
+.accordion-faq-container .default-content-wrapper picture img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+/* intro paragraph */
+.accordion-faq-container .default-content-wrapper > p {
+  margin: 14px 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #202020;
+}
+
+/* contact sidebar heading + text */
+.accordion-faq-container + .section .default-content-wrapper h3 {
+  margin: 0 0 12px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.3;
+  color: #202020;
+}
+
+.accordion-faq-container + .section .default-content-wrapper p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 2;
+  color: #202020;
+}
+
+/* FAQ accordion — flat rows separated by light-grey bottom borders */
+.accordion-faq {
+  width: 100%;
+}
+
+.accordion-faq .accordion-faq-item {
+  border-bottom: 2px solid #ebebeb;
+}
+
+/* question / summary row */
+.accordion-faq .accordion-faq-item-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 40px 13px 7px;
+  margin: 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.accordion-faq .accordion-faq-item-label::-webkit-details-marker {
+  display: none;
+}
+
+/* +/- icon on the right */
+.accordion-faq .accordion-faq-item-label::after {
+  content: '';
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  background-color: #202020;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="7" y="1" width="2" height="14"/><rect x="1" y="7" width="14" height="2"/></svg>') center / contain no-repeat;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="7" y="1" width="2" height="14"/><rect x="1" y="7" width="14" height="2"/></svg>');
+}
+
+/* collapse the vertical bar of the plus to make a minus when open */
+.accordion-faq .accordion-faq-item[open] .accordion-faq-item-label::after {
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="1" y="7" width="14" height="2"/></svg>') center / contain no-repeat;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="1" y="7" width="14" height="2"/></svg>');
+}
+
+/* answer body */
+.accordion-faq .accordion-faq-item-body {
+  padding: 7px 7px 21px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #202020;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.accordion-faq .accordion-faq-item-body p {
+  margin: 0 0 0.8em;
+}
+
+.accordion-faq .accordion-faq-item-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- desktop two-column layout: main content + contact sidebar ---- */
+@media (width >= 900px) {
+  main:has(> .accordion-faq-container) {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    column-gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 32px 0;
+    box-sizing: border-box;
+  }
+
+  /* both sections align to the top row; inner wrappers lose their own
+     max-width/padding since the grid parent now handles centering */
+  main:has(> .accordion-faq-container) > .accordion-faq-container,
+  main:has(> .accordion-faq-container) > .accordion-faq-container + .section {
+    grid-row: 1;
+    margin: 0;
+  }
+
+  main:has(> .accordion-faq-container) > .accordion-faq-container {
+    grid-column: 1;
+  }
+
+  main:has(> .accordion-faq-container) > .accordion-faq-container + .section {
+    grid-column: 2;
+  }
+
+  main:has(> .accordion-faq-container) > .section > div {
+    max-width: none;
+    padding: 0;
+  }
+}

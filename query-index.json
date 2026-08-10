@@ -1,0 +1,40 @@
+{
+  "total": 4,
+  "offset": 0,
+  "limit": 4,
+  "data": [
+    {
+      "path": "/us/en/magazine/guide-la-skateparks",
+      "title": "Ultimate Guide to LA Skateparks",
+      "description": "Breaking down the top skate destinations in all of Los Angeles. You don't want to miss this!",
+      "image": "https://wknd.site/us/en/magazine/guide-la-skateparks/_jcr_content/root/container/container/contentfragment/par2/image_copy.coreimg.png/1660323783259/article-01-picture-01.png?width=750&format=png&optimize=medium",
+      "template": "magazine",
+      "lastModified": "1660323783"
+    },
+    {
+      "path": "/us/en/magazine/ski-touring",
+      "title": "Ski Touring",
+      "description": "Learn about our ski touring experience and how it differs from traditional downhill skiing and even backcountry skiing.",
+      "image": "https://wknd.site/us/en/magazine/ski-touring/_jcr_content/root/container/container/contentfragment/par1/image.coreimg.jpeg/1660323789866/skitouring5sjoeberg.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "magazine",
+      "lastModified": "1660323789"
+    },
+    {
+      "path": "/us/en/magazine/arctic-surfing",
+      "title": "Arctic Surfing",
+      "description": "We traveled to Northern Norway to document the joy of surfing in extreme, but breathtakingly beautiful conditions.",
+      "image": "https://wknd.site/us/en/magazine/arctic-surfing/_jcr_content/root/container/container/contentfragment/par1/image.coreimg.jpeg/1660323789770/surfer-wave-02.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "magazine",
+      "lastModified": "1660323790"
+    },
+    {
+      "path": "/us/en/magazine/san-diego-surf",
+      "title": "San Diego Surf Spots",
+      "description": "Best beach breaks",
+      "image": "https://wknd.site/us/en/magazine/san-diego-surf/_jcr_content/root/container/container/contentfragment/par1/image.coreimg.jpeg/1660323790169/adobestock-164735399.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "magazine",
+      "lastModified": "1660323791"
+    }
+  ],
+  ":type": "sheet"
+}

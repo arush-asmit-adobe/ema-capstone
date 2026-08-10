@@ -4,6 +4,12 @@ header.header-wrapper {
   top: 0;
   height: auto;
   z-index: 10;
+  transition: box-shadow 0.2s ease;
+}
+
+/* drop shadow once the user scrolls down; removed at the top */
+header.header-wrapper.header-scrolled {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
 }
 
 /* header and nav layout */
@@ -44,8 +50,10 @@ header .nav-utility a:hover {
 }
 
 header .nav-lang-flag {
-  font-size: 16px;
-  line-height: 1;
+  display: block;
+  width: 21px;
+  height: 14px;
+  flex: 0 0 auto;
 }
 
 /* down chevron next to EN-US */
@@ -136,11 +144,11 @@ header nav .nav-sections button {
   margin: 0;
   border: 0;
   border-radius: 0;
-  padding: 6px 8px;
+  padding: 14px 18px;
   background-color: transparent;
   color: var(--text-color);
   font-family: var(--body-font-family);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -148,7 +156,8 @@ header nav .nav-sections button {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* yellow hover state (matches carousel CTA) — color change only, no movement */
+/* yellow highlight for the active page, and on hover — color change only, no movement */
+header nav .nav-sections button.is-active,
 header nav .nav-sections button:hover,
 header nav .nav-sections button:focus-visible {
   background-color: #ffea00;
@@ -170,25 +179,17 @@ header.header-wrapper.is-scrolled nav .nav-search {
   height: 26px;
 }
 
+/* magnifying-glass icon (matches source: filled ring + handle at bottom-left) */
 header nav .nav-search-icon {
   display: inline-block;
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid var(--dark-color);
-  border-radius: 50%;
-  position: relative;
+  width: 16px;
+  height: 16px;
   flex: 0 0 auto;
-}
-
-header nav .nav-search-icon::after {
-  content: '';
-  position: absolute;
-  right: -4px;
-  bottom: -3px;
-  width: 6px;
-  height: 1.5px;
   background-color: var(--dark-color);
-  transform: rotate(45deg);
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 1152"><path d="M672,0C406.903,0,192,214.903,192,480c0,95.7,28.011,184.855,76.275,259.725C181.646,826.354,48.075,959.925,36,972c-18,18-36,36-36,72s18,54,36,72s36.012,36,72,36s54-18,72-36c12.075-12.075,145.646-145.646,232.275-232.275C487.144,931.988,576.3,960,672,960c265.097,0,480-214.903,480-480C1152,214.903,937.097,0,672,0z M672,816c-185.568,0-336-150.433-336-336c0-185.568,150.432-336,336-336c185.567,0,336,150.432,336,336C1008,665.567,857.567,816,672,816z"/></svg>');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
 header nav .nav-search input {
@@ -206,4 +207,145 @@ header nav .nav-search input {
   header nav .nav-search {
     width: 150px;
   }
+}
+
+/* ---- Sign In modal ---- */
+header .signin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 88px 24px 24px;
+  overflow-y: auto;
+  background-color: transparent;
+}
+
+header .signin-overlay[hidden] {
+  display: none;
+}
+
+header .signin-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 386px;
+  padding: 32px 28px;
+  background-color: #202020;
+  color: var(--background-color);
+}
+
+header .signin-form {
+  margin: 0;
+}
+
+/* "Sign In" heading — serif with a short yellow underline */
+header .signin-title {
+  margin: 0 0 14px;
+  padding-bottom: 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  color: var(--background-color);
+  position: relative;
+}
+
+header .signin-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 84px;
+  height: 2px;
+  background-color: #ffea00;
+}
+
+/* "Welcome Back" subheading */
+header .signin-subtitle {
+  margin: 27px 0 14px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--background-color);
+}
+
+/* username / password fields */
+header .signin-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+header .signin-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 66px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 32px 16px;
+  background-color: rgb(235 235 235 / 54%);
+  color: var(--background-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  outline: none;
+}
+
+header .signin-input::placeholder {
+  color: #757575;
+  opacity: 1;
+}
+
+header .signin-input:focus {
+  background-color: rgb(235 235 235 / 70%);
+}
+
+/* forgot password link */
+header .signin-forgot {
+  margin: 8px 0 11px;
+}
+
+header .signin-forgot a:any-link {
+  color: var(--background-color);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+header .signin-forgot a:hover {
+  color: #ffea00;
+}
+
+/* yellow SIGN IN submit button */
+header .signin-submit {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 12px 40px;
+  background-color: #ffea00;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+header .signin-submit:hover,
+header .signin-submit:focus-visible {
+  background-color: #f5e000;
+}
+
+/* thin grey separator at the bottom of the panel */
+header .signin-rule {
+  height: 2px;
+  margin: 40px 0 0;
+  border: 0;
+  background-color: #696969;
 }

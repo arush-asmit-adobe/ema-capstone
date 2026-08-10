@@ -1,3 +1,13 @@
+/* page title (e.g. magazine "Magazine" H1) preceding the featured columns — serif, no accent */
+.columns-featured-container .default-content-wrapper h1 {
+  margin: 0 0 24px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  color: #202020;
+}
+
 .columns-featured > div {
   display: flex;
   flex-direction: column;
@@ -5,29 +15,107 @@
 
 .columns-featured img {
   width: 100%;
+  display: block;
 }
 
+/* image on top (mobile), text below */
 .columns-featured > div > div {
   order: 1;
 }
 
 .columns-featured > div > .columns-featured-img-col {
   order: 0;
+  padding: 0;
 }
 
-.columns-featured > div > .columns-featured-img-col img {
-  display: block;
+/* text panel */
+.columns-featured .columns-featured-text-col {
+  background-color: #ebebeb;
+  padding: 32px 24px;
+}
+
+/* eyebrow / pretitle "Featured Article" */
+.columns-featured .columns-featured-eyebrow {
+  margin: 0 0 24px;
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-color);
+}
+
+/* serif heading */
+.columns-featured .columns-featured-text-col h2 {
+  margin: 0 0 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+/* description */
+.columns-featured .columns-featured-text-col p {
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--dark-color);
+}
+
+/* CTA button (yellow) */
+.columns-featured .columns-featured-cta-wrapper {
+  margin: 0;
+}
+
+.columns-featured .columns-featured-cta {
+  display: inline-block;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 16px 28px;
+  background-color: #ffea00;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 @media (width >= 900px) {
-  .columns-featured > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+  /* narrow the section inward from both sides to match source */
+  .columns-featured {
+    margin: 0 32px;
   }
 
-  .columns-featured > div > div {
-    flex: 1;
-    order: unset;
+  .columns-featured > div {
+    align-items: stretch;
+    flex-direction: unset;
+    gap: 0;
+  }
+
+  /* image left, text right — image is twice the width of the text panel */
+  .columns-featured > div > .columns-featured-img-col {
+    order: 0;
+    flex: 2 1 0;
+  }
+
+  .columns-featured .columns-featured-img-col img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .columns-featured .columns-featured-text-col {
+    order: 1;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 63px 36px 36px;
+  }
+
+  .columns-featured .columns-featured-text-col h2 {
+    font-size: 40px;
   }
 }

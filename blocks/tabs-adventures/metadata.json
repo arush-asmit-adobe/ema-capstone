@@ -1,0 +1,49 @@
+{
+  "variantName": "tabs-adventures",
+  "baseBlock": "tabs",
+  "version": "1.0.0",
+  "created": "2026-08-08T18:05:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/adventures.html",
+    "originPage": "WKND Adventures listing page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "category-filter",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "tab labels (All/Climbing/Cycling/Skiing/Surfing/Travel) + per-panel adventure listing grid",
+    "tabCount": 6,
+    "buttonCount": 0,
+    "imageCount": 0,
+    "note": "Each panel's content is an adventure listing grid (image + title link + description per item). Grid items visually match cards-article but are panel content, not a nested block."
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "category/filter tab bars that switch between listing grids",
+      "grouping related content into user-selectable panels",
+      "reducing scroll by tabbing through filtered subsets of a listing"
+    ],
+    "notSuitableFor": [
+      "single non-tabbed listing grids (use cards-article)",
+      "expandable Q&A (use accordion)",
+      "rotating slides (use carousel-hero)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "none",
+    "score": 0,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "No existing tabs-based variant in the project. Created new variant from the Block Collection 'tabs' block."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/adventures"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-08T18:05:00.000Z",
+    "notes": "'Current Adventures' tabbed filter with 6 category tabs; 'All' panel lists 16 adventures, category panels list filtered subsets. moveInstrumentation import/calls removed from vanilla tabs.js since this is a doc (non-xwalk) project and that helper is not present in scripts.js."
+  }
+}

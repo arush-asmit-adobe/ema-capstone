@@ -1,0 +1,71 @@
+{
+  "variantName": "cards-profile",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-08-09T10:16:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/about-us.html",
+    "originPage": "WKND About Us page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "team",
+    "imagePattern": "avatar"
+  },
+  "contentPattern": {
+    "structure": "circular image + name + role + social links",
+    "cards": 4,
+    "buttonCount": 3,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "team / contributor / staff profile grids",
+      "people directories where each card is a circular avatar + name + role/tagline + social links",
+      "centered, borderless card grids of individuals"
+    ],
+    "notSuitableFor": [
+      "article / adventure listing grids with landscape image + description (use cards-article)",
+      "promotional teasers with a CTA and image-at-bottom (use cards-promo)",
+      "single featured side-by-side item (use columns-featured)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": ["cards-article", "cards-promo"],
+    "threshold": 0.8,
+    "decision": "create-new",
+    "results": [
+      {
+        "variant": "cards-article",
+        "score": 0.38,
+        "breakdown": {
+          "colorScheme": "match (light) -> +0.20",
+          "density": "match (both compact/spacious light grids) -> +0.15",
+          "purpose": "mismatch (article vs team) -> 0",
+          "imagePattern": "mismatch (large landscape vs circular avatar) -> 0",
+          "structure": "low overlap (image + title shared; team adds role + social links, drops description) -> +0.03"
+        }
+      },
+      {
+        "variant": "cards-promo",
+        "score": 0.22,
+        "breakdown": {
+          "colorScheme": "match (light) -> +0.20",
+          "density": "mismatch -> 0",
+          "purpose": "mismatch (promo vs team) -> 0",
+          "imagePattern": "mismatch (large image-bottom vs circular avatar) -> 0",
+          "structure": "low overlap; promo has description + CTA, team has role + social links -> +0.02"
+        }
+      }
+    ],
+    "reason": "Both existing cards variants score well below the 80% threshold. The About Us grids are a people/team pattern - circular avatar + name + role tagline + a strip of 3 social icon links, with no description text and no body CTA - which is structurally distinct from cards-article (landscape image + title + description) and cards-promo (title + description + CTA + image-at-bottom). A dedicated 'cards-profile' variant is warranted."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/about-us"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-09T10:16:00.000Z",
+    "notes": "Used for BOTH card grids on the About Us page: the 'Our Contributors' grid (4 people) and the 'WKND Guides' grid (3 people). Both grids share the identical circular-avatar people-card structure."
+  }
+}

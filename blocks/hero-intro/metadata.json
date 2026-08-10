@@ -1,0 +1,54 @@
+{
+  "variantName": "hero-intro",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-08-08T18:05:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/adventures.html",
+    "originPage": "WKND Adventures listing page",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "minimal",
+    "purpose": "intro-hero",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "background image + heading + description (no CTA)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "top-of-page section intros with a large photographic background and overlaid heading + one-line description",
+      "landing/listing page mastheads without a call-to-action",
+      "light, minimal hero areas where text sits in a white card over the image"
+    ],
+    "notSuitableFor": [
+      "dark full-bleed promotional banners with a CTA (use hero-banner)",
+      "rotating multi-slide hero areas (use carousel-hero)",
+      "repeating grids of items (use cards-article)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "hero-banner",
+    "score": 0.3,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "breakdown": {
+      "colorScheme": "mismatch (hero-banner=dark vs hero-intro=light) -> 0",
+      "density": "mismatch (both spacious/minimal but hero-banner=spacious promo) -> 0",
+      "purpose": "mismatch (mid-page promo banner+CTA vs top-of-page intro, no CTA) -> 0",
+      "imagePattern": "match (large background image) -> +0.20",
+      "structure": "partial (background image + heading + description overlap; hero-banner adds a CTA) -> +0.10"
+    },
+    "reason": "Below 80% threshold vs hero-banner: different color scheme (light card vs dark overlay), different purpose (calm top-of-page intro vs high-impact mid-page promo), and no CTA. Warrants a distinct variant."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/adventures"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-08T18:05:00.000Z",
+    "notes": "Adventures intro: full-bleed bushland/river image with a white card containing 'Experience the world with us' + one-line description. No CTA."
+  }
+}

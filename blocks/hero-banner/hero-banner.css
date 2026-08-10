@@ -3,45 +3,110 @@
   padding: 0;
 }
 
+/* full-bleed banner */
 .hero-banner {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  padding: 0;
 }
 
-.hero-banner h1,
-.hero-banner h2,
-.hero-banner h3,
-.hero-banner h4,
-.hero-banner h5,
-.hero-banner h6,
-.hero-banner p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+/* background image */
+.hero-banner .hero-banner-image {
+  line-height: 0;
 }
 
-.hero-banner.no-image * {
-  color: var(--text-color);
+.hero-banner .hero-banner-image picture {
+  display: block;
 }
 
-.hero-banner picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
-}
-
-.hero-banner img {
-  object-fit: cover;
+.hero-banner .hero-banner-image img {
   width: 100%;
-  height: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+/* white content box overlapping the bottom of the image */
+.hero-banner .hero-banner-content {
+  position: relative;
+  z-index: 1;
+  margin: -80px 16px 0;
+  padding: 24px;
+  background-color: var(--background-color);
+}
+
+.hero-banner .hero-banner-content > div {
+  max-width: 1136px;
+  margin: 0 auto;
+}
+
+.hero-banner .hero-banner-content h1,
+.hero-banner .hero-banner-content h2,
+.hero-banner .hero-banner-content h3 {
+  margin: 0 0 8px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.3;
+  color: #202020;
+}
+
+.hero-banner .hero-banner-content p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #202020;
+}
+
+/* yellow "See Trip" CTA button */
+.hero-banner .hero-banner-cta-wrapper {
+  margin: 20px 0 0;
+}
+
+.hero-banner .hero-banner-cta {
+  display: inline-block;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 32px;
+  background-color: #ffea00;
+  color: #202020;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* no-image fallback (kept for reuse of the variant elsewhere) */
+.hero-banner.no-image .hero-banner-content {
+  margin: 0;
 }
 
 @media (width >= 900px) {
-  .hero-banner {
-    padding: 40px 32px;
+  .hero-banner .hero-banner-image img {
+    height: 640px;
+  }
+
+  .hero-banner .hero-banner-content {
+    margin: -180px 124px 0;
+    padding: 0 28px;
+  }
+
+  .hero-banner .hero-banner-content > div {
+    padding: 40px 0;
+  }
+
+  .hero-banner .hero-banner-content h1,
+  .hero-banner .hero-banner-content h2,
+  .hero-banner .hero-banner-content h3 {
+    margin: 18px 0 0;
+    font-size: 36px;
+    line-height: 1.5;
+  }
+
+  .hero-banner .hero-banner-content p {
+    font-size: 18px;
+    line-height: 1.75;
   }
 }
