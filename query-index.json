@@ -1,7 +1,7 @@
 {
-  "total": 5,
+  "total": 9,
   "offset": 0,
-  "limit": 5,
+  "limit": 9,
   "data": [
     {
       "path": "/us/en/magazine/guide-la-skateparks",
@@ -47,6 +47,42 @@
       "template": "magazine",
       "date": "Thursday, 9 Jul 2020",
       "lastModified": "1660323792"
+    },
+    {
+      "path": "/us/en/adventures/yosemite-backpacking",
+      "title": "Yosemite Backpacking",
+      "description": "Yosemite National Park, designated a World Heritage Site in 1984, is best known for its granite cliffs, waterfalls and giant sequoias, but within its nearly 1,200 square miles, you can find deep valleys, grand meadows, glaciers and lakes. The majority of visitors spend their time in the Yosemite Valley, which we'll also explore, but on this trip we'll take you to the backcountry that inspired John Muir to lead a movement to have Congress establish Yosemite as we know it today.",
+      "image": "https://wknd.site/us/en/adventures/yosemite-backpacking/_jcr_content/root/container/carousel/image.coreimg.jpeg/1660323790695/adobestock-231698835.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "adventure",
+      "date": "",
+      "lastModified": "1660323790"
+    },
+    {
+      "path": "/us/en/adventures/whistler-mountain-biking",
+      "title": "Whistler Mountain Biking",
+      "description": "Whistler is often considered North America’s preeminent mountain bike destination. Let us show you why.",
+      "image": "https://wknd.site/us/en/adventures/whistler-mountain-biking/_jcr_content/root/container/carousel/image.coreimg.jpeg/1660323789625/adobestock-122615840.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "adventure",
+      "date": "",
+      "lastModified": "1660323789"
+    },
+    {
+      "path": "/us/en/adventures/west-coast-cycling",
+      "title": "West Coast Cycling",
+      "description": "Join us for this once in a lifetime bike trip traveling from San Francisco to Portland cycling along the Pacific Coast. Experience world class terrain as we head north through redwood forests, state parks, the Columbia river and the Pacific ocean.",
+      "image": "https://wknd.site/us/en/adventures/west-coast-cycling/_jcr_content/root/container/carousel/image.coreimg.jpeg/1660323786740/adobestock-151584995.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "adventure",
+      "date": "",
+      "lastModified": "1660323786"
+    },
+    {
+      "path": "/us/en/adventures/tahoe-skiing",
+      "title": "Tahoe Skiing",
+      "description": "Great weather, crystal clear lake water, and a relaxed California attitude make Lake Tahoe one of the most desirable ski destinations in the world. Few ski areas rival Lake Tahoe for its excellent snow conditions, challenging terrain and state-of-the-art lift chairs. Lake Tahoe is home to dozens of resorts and we'll be your guide for the best of them.",
+      "image": "https://wknd.site/us/en/adventures/tahoe-skiing/_jcr_content/root/container/carousel/image.coreimg.jpeg/1660323785476/adobestock-184591344.jpeg?width=750&format=jpeg&optimize=medium",
+      "template": "adventure",
+      "date": "",
+      "lastModified": "1660323785"
     }
   ],
   ":type": "sheet"

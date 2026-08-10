@@ -3,10 +3,11 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 const QUERY_INDEX = '/query-index.json';
 
 /**
- * Resolve an authored card link. Only magazine article pages (/magazine/…) are
- * migrated, so wire those to their real destination — dropping a trailing .html
- * and mirroring the /content prefix when previewed locally. Any other target
- * (e.g. not-yet-migrated /adventures/… detail pages) stays '#'.
+ * Resolve a card link for the current environment. Only migrated pages
+ * (/magazine/… articles) get a real destination — dropping a trailing .html and
+ * mirroring the /content prefix when previewed locally. Any other target (e.g.
+ * not-yet-migrated /adventures/… detail pages, which are teaser cards on the
+ * source homepage) stays '#'.
  * @param {string} rawHref
  * @returns {string}
  */
@@ -17,17 +18,19 @@ function resolveArticleHref(rawHref) {
 }
 
 /**
- * Build a single card <li> from an article record.
+ * Build a single card <li> from an indexed record. The link points at the
+ * record's own path (resolved per environment; unmigrated targets stay '#').
  * @param {{path:string,title:string,description:string,image:string}} article
  * @returns {HTMLLIElement}
  */
 function buildCard(article) {
   const li = document.createElement('li');
+  const href = resolveArticleHref(article.path);
 
   const imageDiv = document.createElement('div');
   imageDiv.className = 'cards-article-card-image';
   const imgLink = document.createElement('a');
-  imgLink.href = '#';
+  imgLink.href = href;
   if (article.image) {
     const pic = createOptimizedPicture(article.image, article.title, false, [{ width: '750' }]);
     imgLink.append(pic);
@@ -38,7 +41,7 @@ function buildCard(article) {
   body.className = 'cards-article-card-body';
   const h3 = document.createElement('h3');
   const titleLink = document.createElement('a');
-  titleLink.href = '#';
+  titleLink.href = href;
   titleLink.textContent = article.title;
   h3.append(titleLink);
   body.append(h3);
@@ -79,26 +82,21 @@ function decorateAuthored(block) {
 
 /**
  * Determine whether this block should be populated dynamically from the query
- * index, and with which article-path filter.
- *
- * Only the homepage "Recent Articles" teaser is dynamic — it links to
- * /magazine/ pages and its section is headed "Recent Articles". Other card
- * grids that also link to /magazine/ (e.g. the magazine page's authored
- * "All Articles" list) or to /adventures/ keep their authored cards, which
- * already carry the correct set and order of items.
+ * index, and with which article-path filter. The section heading is the signal:
+ *   - "Recent Articles"        -> homepage magazine teaser  -> /magazine/
+ *   - "Where do you want to go" -> homepage adventures grid  -> /adventures/
+ * Any other card grid (e.g. the magazine page's authored "All Articles") keeps
+ * its authored cards, which already carry the correct set and order.
  * @param {Element} block
  * @returns {string|null} path segment to filter on, or null for authored mode
  */
 function getDynamicFilter(block) {
-  const firstLink = block.querySelector('a[href]');
-  if (!firstLink) return null;
-  const href = firstLink.getAttribute('href');
-  if (!href || !href.includes('/magazine/')) return null;
-
-  // Only go dynamic for the "Recent Articles" section (homepage teaser).
   const section = block.closest('.section');
   const heading = section && section.querySelector('.default-content-wrapper h2, .default-content-wrapper h3');
-  if (heading && /recent articles/i.test(heading.textContent)) return '/magazine/';
+  if (!heading) return null;
+  const text = heading.textContent;
+  if (/recent articles/i.test(text)) return '/magazine/';
+  if (/where do you want to go/i.test(text)) return '/adventures/';
   return null;
 }
 
