@@ -77,12 +77,16 @@
     height: 640px;
   }
 
+  /* the source card is a fixed 1192px wide, centered (image shows on both
+     sides), NOT a full-width card with fixed side margins */
   .hero-intro > div:last-child {
-    margin: -180px 124px 0;
+    max-width: 1192px;
+    margin: -180px auto 0;
     padding: 0 28px;
   }
 
   .hero-intro > div:last-child > div {
+    max-width: none;
     padding: 40px 0;
   }
 
