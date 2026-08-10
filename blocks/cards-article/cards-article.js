@@ -148,7 +148,9 @@ function getGridConfig(block) {
 
 /**
  * Convert the section's standalone CTA link ("All Articles" / "All Trips")
- * into a button pointing to '#'.
+ * into a button that navigates to the link's authored destination (e.g.
+ * "All Articles" -> /us/en/magazine, "All Trips" -> /us/en/adventures),
+ * resolved per environment.
  * @param {Element} block
  */
 function decorateSectionCta(block) {
@@ -156,11 +158,12 @@ function decorateSectionCta(block) {
   if (!section) return;
   const ctas = section.querySelectorAll('.default-content-wrapper p > a');
   ctas.forEach((a) => {
+    const href = resolveArticleHref(a.getAttribute('href'));
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'cards-article-cta';
     button.textContent = a.textContent;
-    button.addEventListener('click', () => { window.location.href = '#'; });
+    button.addEventListener('click', () => { window.location.href = href; });
     a.replaceWith(button);
   });
 }
