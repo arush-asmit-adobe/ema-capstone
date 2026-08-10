@@ -5,20 +5,19 @@ const QUERY_INDEX = '/query-index.json';
 /** Category tabs render in this order (source order); extras are appended. */
 const TAB_ORDER = ['Climbing', 'Cycling', 'Skiing', 'Surfing', 'Travel'];
 
-/** Path segments that have migrated detail pages a card can link to. */
-const MIGRATED_DETAIL_PATHS = ['/magazine/', '/adventures/'];
-
 /**
- * Resolve a card link for the current environment. Migrated detail pages
- * (/magazine/… articles and /adventures/… adventure pages) get a real
- * destination — dropping a trailing .html and mirroring the /content prefix
- * when previewed locally. Any other target stays '#'.
+ * Resolve a card's destination to a real page on this site. Drops a trailing
+ * `.html` and mirrors the `/content` path prefix used by the local preview
+ * (production serves the same paths at the root). A missing/empty path falls
+ * back to '#'. All magazine and adventure detail pages are migrated, so cards
+ * point at their own page.
  * @param {string} rawHref
  * @returns {string}
  */
 function resolveArticleHref(rawHref) {
-  const href = (rawHref || '').replace(/\.html($|[?#])/, '$1');
-  if (!MIGRATED_DETAIL_PATHS.some((seg) => href.includes(seg))) return '#';
+  const href = (rawHref || '').trim().replace(/\.html($|[?#])/, '$1');
+  if (!href || href === '#') return '#';
+  if (!href.startsWith('/') || href.startsWith('/content/')) return href;
   return window.location.pathname.startsWith('/content/') ? `/content${href}` : href;
 }
 
@@ -45,7 +44,6 @@ function splitCategories(raw) {
 function buildCard(record) {
   const li = document.createElement('li');
   li.dataset.categories = splitCategories(record.category).join(',');
-  const href = resolveArticleHref(record.path);
 
   // Image is not wrapped in its own anchor — the single title link below is
   // "stretched" over the whole card (see CSS), so one focusable link covers
@@ -61,14 +59,13 @@ function buildCard(record) {
   body.className = 'cards-article-card-body';
   const h3 = document.createElement('h3');
   const titleLink = document.createElement('a');
-  titleLink.href = href;
+  titleLink.href = resolveArticleHref(record.path);
   titleLink.textContent = record.title;
-  // Only real destinations become a whole-card link; unmigrated ('#') targets
-  // render as plain text so the card isn't a dead full-surface click target.
-  if (href !== '#') {
-    titleLink.className = 'cards-article-card-link';
-    li.classList.add('cards-article-card-clickable');
-  }
+  // Whole-card link: the single stretched anchor covers the image and title
+  // (see the ::after overlay in CSS), for a one-tab-stop click target routing
+  // to the card's own page.
+  titleLink.className = 'cards-article-card-link';
+  li.classList.add('cards-article-card-clickable');
   h3.append(titleLink);
   body.append(h3);
   if (record.description) {
@@ -103,21 +100,21 @@ function decorateAuthored(block) {
   });
   // Consolidate each card to a single stretched link. Authored cards carry two
   // anchors to the same page (an image link + a title link); unwrap the image
-  // anchor (keep the picture) so only the title link remains, then stretch it
-  // over the whole card for a one-tab-stop clickable surface.
+  // anchor (keep the picture) so only the title link remains, resolve it to the
+  // card's own page, then stretch it over the whole card for a one-tab-stop
+  // clickable surface.
   [...ul.children].forEach((li) => {
     const anchors = [...li.querySelectorAll('a[href]')];
     const titleLink = li.querySelector('h3 a[href]') || anchors[anchors.length - 1];
     anchors.forEach((a) => {
-      const href = resolveArticleHref(a.getAttribute('href'));
       if (a === titleLink) {
-        a.href = href;
+        a.href = resolveArticleHref(a.getAttribute('href'));
       } else {
         // image (or duplicate) anchor → unwrap, preserving its contents
         a.replaceWith(...a.childNodes);
       }
     });
-    if (titleLink && titleLink.getAttribute('href') !== '#') {
+    if (titleLink) {
       titleLink.classList.add('cards-article-card-link');
       li.classList.add('cards-article-card-clickable');
     }

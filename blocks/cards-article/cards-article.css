@@ -184,3 +184,12 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Exclude the description paragraph from the whole-card click target: lift it
+   above the stretched-link overlay so clicks on the description text are not
+   routed through the card link (image + title remain clickable). Placed last
+   so its higher specificity does not descend below the base `p` rules. */
+.cards-article > ul > li.cards-article-card-clickable .cards-article-card-body p {
+  position: relative;
+  z-index: 2;
+}
