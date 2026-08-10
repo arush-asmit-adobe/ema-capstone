@@ -1,3 +1,42 @@
+/* ---- category tab list (Current Adventures) ---- */
+.cards-article .cards-article-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
+  margin-bottom: 32px;
+}
+
+.cards-article .cards-article-tab {
+  flex: 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #202020;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.cards-article .cards-article-tab[aria-selected='true'] {
+  background-color: #202020;
+  color: #fff;
+  cursor: default;
+}
+
+.cards-article .cards-article-tab:hover,
+.cards-article .cards-article-tab:focus-visible {
+  background-color: #202020;
+  color: #fff;
+}
+
 .cards-article > ul {
   list-style: none;
   margin: 0;
@@ -5,6 +44,10 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px 14px;
+}
+
+.cards-article > ul > li[hidden] {
+  display: none;
 }
 
 .cards-article > ul > li {
@@ -20,7 +63,7 @@
 
 .cards-article > ul > li img {
   width: 100%;
-  aspect-ratio: 765 / 535;
+  aspect-ratio: 13 / 10; /* source card images are 260x200 (1.30) */
   object-fit: cover;
   display: block;
 }
@@ -49,7 +92,7 @@
 
 /* description — single line, truncated with ellipsis */
 .cards-article .cards-article-card-body p {
-  margin: 12px 0 0;
+  margin: 16px 0 0; /* source spaces the description 16px below the title */
   font-size: 14px;
   line-height: 1.5;
   color: #696969;

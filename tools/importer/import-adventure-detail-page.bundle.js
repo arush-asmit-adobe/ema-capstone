@@ -35,68 +35,101 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-adventures-page.js
-  var import_adventures_page_exports = {};
-  __export(import_adventures_page_exports, {
-    default: () => import_adventures_page_default
+  // tools/importer/import-adventure-detail-page.js
+  var import_adventure_detail_page_exports = {};
+  __export(import_adventure_detail_page_exports, {
+    default: () => import_adventure_detail_page_default
   });
 
-  // tools/importer/parsers/hero-intro.js
+  // tools/importer/parsers/carousel-mini.js
   function parse(element, { document }) {
-    const content = element.querySelector(".cmp-teaser__content") || element;
-    const title = content.querySelector('.cmp-teaser__title, h1, h2, h3, [class*="title"]:not([class*="pretitle"])');
-    const description = content.querySelector('.cmp-teaser__description, [class*="description"], p');
-    const bgImage = element.querySelector(".cmp-teaser__image img, .cmp-image img, img");
-    if (!title && !description && !bgImage) {
-      element.replaceWith(...element.childNodes);
-      return;
+    let slides = Array.from(element.querySelectorAll(".cmp-carousel__item"));
+    if (!slides.length) {
+      slides = Array.from(element.querySelectorAll(".cmp-image, .image"));
     }
     const cells = [];
-    if (bgImage) cells.push([bgImage]);
-    const contentCell = [];
-    if (title) contentCell.push(title);
-    if (description) contentCell.push(description);
-    if (contentCell.length) cells.push([contentCell]);
-    const block = WebImporter.Blocks.createBlock(document, { name: "hero-intro", cells });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/cards-article.js
-  function parse2(element, { document }) {
-    const activePanel = element.querySelector(".cmp-tabs__tabpanel--active");
-    const scope = activePanel || element;
-    let items = Array.from(scope.querySelectorAll(".cmp-image-list__item"));
-    if (!items.length) {
-      items = Array.from(scope.querySelectorAll(":scope > li, .cmp-image-list__item-content"));
-    }
-    const cells = [];
-    items.forEach((item) => {
-      const image = item.querySelector(".cmp-image-list__item-image img, .cmp-image img, img");
-      const titleLink = item.querySelector('.cmp-image-list__item-title-link, a[class*="title"]');
-      const titleText = item.querySelector('.cmp-image-list__item-title, [class*="item-title"]:not(a)');
-      const description = item.querySelector('.cmp-image-list__item-description, [class*="description"]');
-      const textCell = [];
-      if (titleLink) {
-        const heading = document.createElement("h3");
-        const link = document.createElement("a");
-        link.href = titleLink.getAttribute("href") || "#";
-        link.textContent = (titleText || titleLink).textContent.trim();
-        heading.append(link);
-        textCell.push(heading);
-      } else if (titleText) {
-        const heading = document.createElement("h3");
-        heading.textContent = titleText.textContent.trim();
-        textCell.push(heading);
-      }
-      if (description) textCell.push(description);
-      if (!image && !textCell.length) return;
-      cells.push([image || "", textCell.length ? textCell : ""]);
+    slides.forEach((slide) => {
+      const image = slide.querySelector(".cmp-image img, .cmp-image__image, img");
+      if (!image) return;
+      cells.push([image]);
     });
     if (!cells.length) {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document, { name: "cards-article", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "carousel-mini", cells });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/table-facts.js
+  function parse2(element, { document }) {
+    const facts = Array.from(
+      element.querySelectorAll(".cmp-contentfragment__element")
+    );
+    const cells = [];
+    facts.forEach((fact) => {
+      const labelEl = fact.querySelector(".cmp-contentfragment__element-title, dt");
+      const valueEl = fact.querySelector(".cmp-contentfragment__element-value, dd");
+      const label = labelEl ? (labelEl.textContent || "").trim() : "";
+      const value = valueEl ? (valueEl.textContent || "").trim() : "";
+      if (!label && !value) return;
+      cells.push([label, value]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: "table-facts", cells });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/tabs-adventure.js
+  function parse3(element, { document }) {
+    const labels = Array.from(
+      element.querySelectorAll(".cmp-tabs__tablist .cmp-tabs__tab")
+    );
+    const panels = Array.from(
+      element.querySelectorAll(":scope > .cmp-tabs__tabpanel")
+    );
+    const cells = [];
+    labels.forEach((labelEl, i) => {
+      const label = (labelEl.textContent || "").trim();
+      const panel = panels[i];
+      const contentCell = [];
+      if (panel) {
+        const body = panel.querySelector(".cmp-contentfragment__elements") || panel;
+        const nodes = Array.from(
+          body.querySelectorAll("p, img, ul, ol, h1, h2, h3, h4, h5, h6, b, strong")
+        );
+        const seen = /* @__PURE__ */ new Set();
+        nodes.forEach((node) => {
+          if (node.classList && node.classList.contains("cmp-contentfragment__title")) return;
+          if (node.tagName === "IMG") {
+            if (seen.has(node)) return;
+            seen.add(node);
+            contentCell.push(node);
+            return;
+          }
+          if ((node.tagName === "B" || node.tagName === "STRONG") && node.closest("p")) return;
+          const text = (node.textContent || "").replace(/ /g, " ").trim();
+          const hasImg = node.querySelector && node.querySelector("img");
+          if (!text && !hasImg) return;
+          const alreadyCaptured = contentCell.some(
+            (kept) => kept.nodeType === 1 && kept.contains && kept.contains(node)
+          );
+          if (alreadyCaptured) return;
+          seen.add(node);
+          contentCell.push(node);
+        });
+      }
+      if (!label && !contentCell.length) return;
+      cells.push([label, contentCell.length ? contentCell : ""]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: "tabs-adventure", cells });
     element.replaceWith(block);
   }
 
@@ -181,52 +214,100 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-adventures-page.js
+  // tools/importer/import-adventure-detail-page.js
+  function adventureCleanupTransformer(hookName, element) {
+    if (hookName !== "beforeTransform") return;
+    element.querySelectorAll(".cmp-title").forEach((t) => {
+      const heading = t.querySelector("h1, h2, h3, h4, h5, h6");
+      if (heading && /share this adventure/i.test(heading.textContent || "")) {
+        t.remove();
+      }
+    });
+    WebImporter.DOMUtils.remove(element, [
+      ".breadcrumb",
+      ".sharing"
+    ]);
+  }
   var PAGE_TEMPLATE = {
-    name: "adventures-page",
-    description: "WKND adventures landing page: intro hero with overlaid white card, and a tabbed Current Adventures listing.",
+    name: "adventure-detail-page",
+    description: 'WKND adventure detail page: full-width image masthead carousel, page title (H1), an adventure spec fact-sheet (label/value table), and an interactive Overview/Itinerary/What to Bring tab switcher. The "Share this Adventure" widget is excluded as chrome.',
     urls: [
-      "https://wknd.site/us/en/adventures.html"
+      "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+      "https://wknd.site/us/en/adventures/beervana-portland.html",
+      "https://wknd.site/us/en/adventures/climbing-new-zealand.html",
+      "https://wknd.site/us/en/adventures/colorado-rock-climbing.html",
+      "https://wknd.site/us/en/adventures/cycling-southern-utah.html",
+      "https://wknd.site/us/en/adventures/cycling-tuscany.html",
+      "https://wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+      "https://wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+      "https://wknd.site/us/en/adventures/napa-wine-tasting.html",
+      "https://wknd.site/us/en/adventures/riverside-camping-australia.html",
+      "https://wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+      "https://wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+      "https://wknd.site/us/en/adventures/tahoe-skiing.html",
+      "https://wknd.site/us/en/adventures/west-coast-cycling.html",
+      "https://wknd.site/us/en/adventures/whistler-mountain-biking.html",
+      "https://wknd.site/us/en/adventures/yosemite-backpacking.html"
     ],
     blocks: [
       {
-        name: "hero-intro",
-        instances: [".teaser.cmp-teaser--hero:not(.cmp-teaser--imagebottom)"]
+        name: "carousel-mini",
+        instances: [".carousel.cmp-carousel--mini"]
       },
       {
-        // Current Adventures: the full listing lives in the active "All" tab
-        // panel. Map that single panel to the unified cards-article block so the
-        // adventures grid uses the same card component (and dynamic query-index
-        // rendering) as the homepage/magazine grids. The category tabs are
-        // rebuilt at runtime from the query index's `category` field.
-        name: "cards-article",
+        name: "table-facts",
+        instances: [".contentfragment.cmp-contentfragment--elements"]
+      },
+      {
+        name: "tabs-adventure",
         instances: [".cmp-tabs"]
       }
     ],
     sections: [
       {
         id: "section-1",
-        name: "Intro Hero",
-        selector: ".teaser.cmp-teaser--hero:not(.cmp-teaser--imagebottom)",
+        name: "Masthead Image Carousel",
+        selector: ".carousel.cmp-carousel--mini",
         style: null,
-        blocks: ["hero-intro"],
-        defaultContent: ["#title-e8e3276d1e"]
+        blocks: ["carousel-mini"],
+        defaultContent: []
       },
       {
+        // Portable across all adventure detail pages: break before the page H1
+        // (page-specific title ids differ per page). This splits the masthead
+        // carousel off into its own section, matching the article-page pattern.
         id: "section-2",
-        name: "Current Adventures",
+        name: "Page Title",
+        selector: "h1",
+        style: null,
+        blocks: [],
+        defaultContent: ["h1"]
+      },
+      {
+        id: "section-3",
+        name: "Adventure Details Fact-Sheet",
+        selector: ".contentfragment.cmp-contentfragment--elements",
+        style: null,
+        blocks: ["table-facts"],
+        defaultContent: []
+      },
+      {
+        id: "section-4",
+        name: "Adventure Detail Tabs",
         selector: ".cmp-tabs",
         style: null,
-        blocks: ["cards-article"],
-        defaultContent: ["#title-dffa0ffaf3"]
+        blocks: ["tabs-adventure"],
+        defaultContent: []
       }
     ]
   };
   var parsers = {
-    "hero-intro": parse,
-    "cards-article": parse2
+    "carousel-mini": parse,
+    "table-facts": parse2,
+    "tabs-adventure": parse3
   };
   var transformers = [
+    adventureCleanupTransformer,
     transform,
     ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
   ];
@@ -263,7 +344,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_adventures_page_default = {
+  var import_adventure_detail_page_default = {
     transform: (payload) => {
       const {
         document,
@@ -307,5 +388,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_adventures_page_exports);
+  return __toCommonJS(import_adventure_detail_page_exports);
 })();

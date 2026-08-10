@@ -1,0 +1,166 @@
+/*
+ * carousel-mini — light, image-only masthead gallery for adventure detail pages.
+ * Full-bleed image band (no overlaid text/CTA), with dot indicators and, when
+ * more than one slide is authored, prev/next arrow controls.
+ */
+
+/* full-bleed: break out of the centered content column */
+.carousel-mini {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.carousel-mini .carousel-mini-slides-container {
+  position: relative;
+}
+
+.carousel-mini .carousel-mini-slides,
+.carousel-mini .carousel-mini-slide-indicators {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-mini .carousel-mini-slides {
+  display: flex;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overflow: scroll clip;
+}
+
+.carousel-mini .carousel-mini-slides::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-mini .carousel-mini-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+
+  /* source masthead band: a tall ~400px image band on mobile, 440px on desktop,
+     image cropped with object-fit: cover */
+  height: 300px;
+}
+
+@media (width >= 600px) {
+  .carousel-mini .carousel-mini-slide {
+    height: 400px;
+  }
+}
+
+@media (width >= 900px) {
+  .carousel-mini .carousel-mini-slide {
+    height: 440px;
+  }
+}
+
+.carousel-mini .carousel-mini-slide .carousel-mini-slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-mini .carousel-mini-slide .carousel-mini-slide-image picture {
+  position: absolute;
+  inset: 0;
+}
+
+.carousel-mini .carousel-mini-slide .carousel-mini-slide-image picture > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* image-only variant: any accidental text column is de-emphasised */
+.carousel-mini .carousel-mini-slide .carousel-mini-slide-content {
+  z-index: 1;
+  position: relative;
+}
+
+.carousel-mini .carousel-mini-slide-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 12px;
+  padding: 12px;
+  line-height: 0;
+}
+
+.carousel-mini .carousel-mini-slide-indicator button {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #dadada;
+  transition: background-color 0.2s;
+}
+
+.carousel-mini .carousel-mini-slide-indicator button:disabled,
+.carousel-mini .carousel-mini-slide-indicator button:hover,
+.carousel-mini .carousel-mini-slide-indicator button:focus-visible {
+  background-color: var(--text-color, #131313);
+}
+
+.carousel-mini .carousel-mini-navigation-buttons {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel-mini .carousel-mini-navigation-buttons button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border-radius: 50%;
+  padding: 0;
+  background-color: rgb(19 19 19 / 25%);
+  transition: background-color 0.2s;
+}
+
+.carousel-mini .carousel-mini-navigation-buttons button:hover,
+.carousel-mini .carousel-mini-navigation-buttons button:focus-visible {
+  background-color: rgb(19 19 19 / 75%);
+}
+
+.carousel-mini .carousel-mini-navigation-buttons button::after {
+  display: block;
+  content: '';
+  border: 2px solid #fff;
+  border-bottom: 0;
+  border-left: 0;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.carousel-mini .carousel-mini-navigation-buttons button.slide-next::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+  left: calc(50% - 2px);
+}
+
+@media (width >= 600px) {
+  .carousel-mini .carousel-mini-navigation-buttons {
+    left: 24px;
+    right: 24px;
+  }
+}

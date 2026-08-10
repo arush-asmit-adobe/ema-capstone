@@ -1,0 +1,122 @@
+/*
+ * table-facts — adventure detail "fact sheet".
+ * A 2-column label/value spec list. Matches the WKND adventure sidebar: each
+ * fact is a small grey uppercase label above a bold value, stacked vertically
+ * with generous row spacing (no borders, no accent rule — the source is plain).
+ */
+
+.table-facts.block {
+  width: 100%;
+}
+
+.table-facts.block table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+/* each fact row stacks label-above-value */
+.table-facts.block table tbody tr {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.table-facts.block table tbody td {
+  display: block;
+  padding: 0;
+  text-align: left;
+}
+
+.table-facts.block table td p {
+  margin: 0;
+}
+
+/* first cell = label: small grey uppercase */
+.table-facts.block table tbody td:first-child {
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #696969;
+}
+
+/* second cell = value: bold dark */
+.table-facts.block table tbody td:last-child {
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #202020;
+}
+
+/* optional header variant (only when authored with `with-header`) */
+.table-facts.block table thead tr {
+  border-bottom: 2px solid #202020;
+}
+
+.table-facts.block table th {
+  padding: 0.5em 0;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* ---------------------------------------------------------------------------
+ * Adventure detail page layout
+ * The adventure detail section stacks: page title (H1) full-width, then the
+ * fact-sheet sidebar beside the tabs. This block's CSS owns the layout because
+ * it always loads on adventure pages (every page has a fact-sheet).
+ * Scope: the section that carries BOTH the fact-sheet and the tabs.
+ * ------------------------------------------------------------------------- */
+
+/* page title (H1) — Asar/Georgia serif, 40px, no yellow underline (source) */
+.section.table-facts-container.tabs-adventure-container .default-content-wrapper h1 {
+  margin: 0 0 8px;
+  padding-bottom: 0;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  color: #202020;
+}
+
+/* the section's title h1 has no accent underline on adventure pages */
+.section.table-facts-container.tabs-adventure-container .default-content-wrapper h1::after {
+  content: none;
+}
+
+@media (width >= 900px) {
+  /* two-column grid: fact-sheet sidebar (fixed) + tabs (fills remaining).
+     The H1 default-content-wrapper spans both columns. The section becomes the
+     grid container (its three wrappers are direct children); we re-apply the
+     global centered max-width/padding here since the per-wrapper `> div` rule
+     from styles.css no longer governs a single centered column. */
+  .section.table-facts-container.tabs-adventure-container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    column-gap: 40px;
+    align-items: start;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 0 32px;
+  }
+
+  /* neutralize the global per-wrapper centering so the grid controls width */
+  .section.table-facts-container.tabs-adventure-container > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .section.table-facts-container.tabs-adventure-container > .default-content-wrapper {
+    grid-column: 1 / -1;
+  }
+
+  .section.table-facts-container.tabs-adventure-container > .table-facts-wrapper {
+    grid-column: 1;
+  }
+
+  .section.table-facts-container.tabs-adventure-container > .tabs-adventure-wrapper {
+    grid-column: 2;
+  }
+}

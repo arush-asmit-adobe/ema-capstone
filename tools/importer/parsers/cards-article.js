@@ -16,10 +16,18 @@
  * (Recent Articles + Adventures grid); this parser runs per matched element.
  */
 export default function parse(element, { document }) {
+  // When mapped to a tabbed listing (.cmp-tabs), the active ("All") panel holds
+  // the full, de-duplicated set of cards — the category panels only repeat a
+  // subset. Scope to the active panel so those repeats don't create duplicates.
+  // For non-tabbed grids (homepage/magazine .cmp-image-list) there is no active
+  // panel, so the scope stays the element itself.
+  const activePanel = element.querySelector('.cmp-tabs__tabpanel--active');
+  const scope = activePanel || element;
+
   // Each card is a list item; fall back to article wrappers if the markup varies.
-  let items = Array.from(element.querySelectorAll('.cmp-image-list__item'));
+  let items = Array.from(scope.querySelectorAll('.cmp-image-list__item'));
   if (!items.length) {
-    items = Array.from(element.querySelectorAll(':scope > li, .cmp-image-list__item-content'));
+    items = Array.from(scope.querySelectorAll(':scope > li, .cmp-image-list__item-content'));
   }
 
   const cells = [];

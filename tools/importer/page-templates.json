@@ -181,7 +181,7 @@
       ],
       "representativeUrl": "https://wknd.site/us/en/adventures.html",
       "coverageGaps": [],
-      "description": "WKND adventures landing page: intro hero with overlaid white card, and a tabbed Current Adventures listing (All/Climbing/Cycling/Skiing/Surfing/Travel).",
+      "description": "WKND adventures landing page: intro hero with overlaid white card, and a Current Adventures listing rendered via the unified cards-article block (category tabs rebuilt at runtime from the query index).",
       "blocks": [
         {
           "name": "hero-intro",
@@ -190,7 +190,7 @@
           ]
         },
         {
-          "name": "tabs-adventures",
+          "name": "cards-article",
           "instances": [
             ".cmp-tabs"
           ]
@@ -215,7 +215,7 @@
           "selector": ".cmp-tabs",
           "style": null,
           "blocks": [
-            "tabs-adventures"
+            "cards-article"
           ],
           "defaultContent": [
             "#title-dffa0ffaf3"
@@ -373,6 +373,92 @@
           "style": null,
           "blocks": [
             "cards-profile"
+          ],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "adventure-detail-page",
+      "urls": [
+        "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+        "https://wknd.site/us/en/adventures/beervana-portland.html",
+        "https://wknd.site/us/en/adventures/climbing-new-zealand.html",
+        "https://wknd.site/us/en/adventures/colorado-rock-climbing.html",
+        "https://wknd.site/us/en/adventures/cycling-southern-utah.html",
+        "https://wknd.site/us/en/adventures/cycling-tuscany.html",
+        "https://wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+        "https://wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+        "https://wknd.site/us/en/adventures/napa-wine-tasting.html",
+        "https://wknd.site/us/en/adventures/riverside-camping-australia.html",
+        "https://wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+        "https://wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+        "https://wknd.site/us/en/adventures/tahoe-skiing.html",
+        "https://wknd.site/us/en/adventures/west-coast-cycling.html",
+        "https://wknd.site/us/en/adventures/whistler-mountain-biking.html",
+        "https://wknd.site/us/en/adventures/yosemite-backpacking.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+      "coverageGaps": [],
+      "description": "WKND adventure detail page: full-width image masthead carousel, page title (H1), an adventure spec fact-sheet (label/value table), and an interactive Overview/Itinerary/What to Bring tab switcher. The 'Share this Adventure' widget is excluded as chrome.",
+      "blocks": [
+        {
+          "name": "carousel-mini",
+          "instances": [
+            ".carousel.cmp-carousel--mini"
+          ]
+        },
+        {
+          "name": "table-facts",
+          "instances": [
+            ".contentfragment.cmp-contentfragment--elements"
+          ]
+        },
+        {
+          "name": "tabs-adventure",
+          "instances": [
+            ".cmp-tabs"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Masthead Image Carousel",
+          "selector": ".carousel.cmp-carousel--mini",
+          "style": null,
+          "blocks": [
+            "carousel-mini"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Page Title",
+          "selector": "h1",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "h1"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Adventure Details Fact-Sheet",
+          "selector": ".contentfragment.cmp-contentfragment--elements",
+          "style": null,
+          "blocks": [
+            "table-facts"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4",
+          "name": "Adventure Detail Tabs",
+          "selector": ".cmp-tabs",
+          "style": null,
+          "blocks": [
+            "tabs-adventure"
           ],
           "defaultContent": []
         }

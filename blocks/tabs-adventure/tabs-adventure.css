@@ -1,0 +1,86 @@
+/*
+ * tabs-adventure — adventure detail tab switcher (Overview / Itinerary / What to Bring).
+ * Matches the WKND source: a row of dark (#202020) tab buttons with white
+ * uppercase labels, above a plain content panel (no border/background), body
+ * text at 18px.
+ */
+
+.tabs-adventure .tabs-adventure-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
+  margin-bottom: 24px;
+}
+
+.tabs-adventure .tabs-adventure-list button {
+  flex: 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: #202020;
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tabs-adventure .tabs-adventure-list button p {
+  margin: 0;
+}
+
+.tabs-adventure .tabs-adventure-list button[aria-selected='true'] {
+  background-color: #202020;
+  cursor: default;
+}
+
+.tabs-adventure .tabs-adventure-list button:hover,
+.tabs-adventure .tabs-adventure-list button:focus-visible {
+  background-color: #3d3d3d;
+}
+
+/* content panel: plain, no border/background */
+.tabs-adventure .tabs-adventure-panel {
+  padding: 0;
+  border: 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #202020;
+}
+
+.tabs-adventure .tabs-adventure-panel[aria-hidden='true'] {
+  display: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-adventure .tabs-adventure-panel p {
+  margin: 0 0 20px;
+}
+
+/* in-body images span the panel width */
+.tabs-adventure .tabs-adventure-panel img {
+  max-width: 100%;
+  height: auto;
+  margin: 8px 0;
+}
+
+/* itinerary sub-headings (bold surf-break names) */
+.tabs-adventure .tabs-adventure-panel p strong {
+  font-weight: 700;
+}
+
+/* "What to Bring" bulleted list */
+.tabs-adventure .tabs-adventure-panel ul {
+  margin: 0 0 20px;
+  padding-left: 20px;
+}
+
+.tabs-adventure .tabs-adventure-panel li {
+  margin-bottom: 8px;
+}

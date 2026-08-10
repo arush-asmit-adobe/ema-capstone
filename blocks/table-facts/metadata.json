@@ -1,0 +1,48 @@
+{
+  "variantName": "table-facts",
+  "baseBlock": "table",
+  "version": "1.0.0",
+  "created": "2026-08-10T13:55:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+    "originPage": "WKND adventure detail page (Bali Surf Camp)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "fact-sheet",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "label | value per row (no-header 2-column spec table)",
+    "itemCount": 6,
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "adventure/trip specification fact-sheets (activity, trip length, group size, difficulty, price, etc.)",
+      "any label/value key-fact list rendered as a compact spec sheet",
+      "product/spec attribute lists"
+    ],
+    "notSuitableFor": [
+      "free side-by-side prose columns (use columns/columns-featured)",
+      "repeating image+title+description item grids (use cards-article)",
+      "collapsible Q&A (use accordion-faq)"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "none",
+    "score": 0,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "No existing table-based variant in the project (scanned blocks/: existing custom variants are cards-*, carousel-*, columns-*, hero-*, accordion-faq, quote-pull, share-story — none model a label/value fact sheet). The adventure details fact-sheet is genuinely new adventure-specific structure with no existing equivalent. Best similarity 0, below threshold, so a new variant was created from the vanilla Block Collection table (no-header, 2-column)."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/adventures/bali-surf-camp"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-10T13:55:00.000Z",
+    "notes": "doc (non-xwalk) project: moveInstrumentation import/call removed (not exported by scripts/scripts.js here). JS is otherwise the vanilla table decorator. Intended for the 'no-header' variant so the first row is data; CSS renders each row as a label-above-value spec card with a WKND yellow left-accent border. Header/striped/bordered base styles retained for graceful fallback."
+  }
+}

@@ -3,7 +3,7 @@
 
 // PARSER IMPORTS
 import heroIntroParser from './parsers/hero-intro.js';
-import tabsAdventuresParser from './parsers/tabs-adventures.js';
+import cardsArticleParser from './parsers/cards-article.js';
 
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/wknd-cleanup.js';
@@ -22,7 +22,12 @@ const PAGE_TEMPLATE = {
       instances: ['.teaser.cmp-teaser--hero:not(.cmp-teaser--imagebottom)'],
     },
     {
-      name: 'tabs-adventures',
+      // Current Adventures: the full listing lives in the active "All" tab
+      // panel. Map that single panel to the unified cards-article block so the
+      // adventures grid uses the same card component (and dynamic query-index
+      // rendering) as the homepage/magazine grids. The category tabs are
+      // rebuilt at runtime from the query index's `category` field.
+      name: 'cards-article',
       instances: ['.cmp-tabs'],
     },
   ],
@@ -40,7 +45,7 @@ const PAGE_TEMPLATE = {
       name: 'Current Adventures',
       selector: '.cmp-tabs',
       style: null,
-      blocks: ['tabs-adventures'],
+      blocks: ['cards-article'],
       defaultContent: ['#title-dffa0ffaf3'],
     },
   ],
@@ -49,7 +54,7 @@ const PAGE_TEMPLATE = {
 // PARSER REGISTRY - Map parser names to functions
 const parsers = {
   'hero-intro': heroIntroParser,
-  'tabs-adventures': tabsAdventuresParser,
+  'cards-article': cardsArticleParser,
 };
 
 // TRANSFORMER REGISTRY - cleanup runs first, sections runs after (adds <hr> breaks)

@@ -1,0 +1,48 @@
+{
+  "variantName": "tabs-adventure",
+  "baseBlock": "tabs",
+  "version": "1.0.0",
+  "created": "2026-08-10T13:55:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+    "originPage": "WKND adventure detail page (Bali Surf Camp)",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "adventure-detail-tabs",
+    "imagePattern": "mixed"
+  },
+  "contentPattern": {
+    "structure": "tab label + tab content (rich default content) per row",
+    "itemCount": 3,
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "adventure/product detail tab switchers (Overview / Itinerary / What to Bring)",
+      "grouping closely related content into user-selectable tabbed sections",
+      "reducing page scroll by tabbing rich content panels (headings, paragraphs, images, lists)"
+    ],
+    "notSuitableFor": [
+      "collapsible FAQ-style Q&A where all items may be open (use accordion-faq)",
+      "rotating image slides (use carousel-mini / carousel-hero)",
+      "content that must all be visible at once without interaction"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "accordion-faq",
+    "score": 0.2,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "The project has NO tabs block (base=tabs). The only related interactive block is accordion-faq (base=accordion), but that is the wrong interaction model — the source is a genuine role=tablist tab switcher, not collapsible Q&A, and accordion-faq's own metadata explicitly says tabbed switching should not reuse it. Different base block and interaction pattern → score far below 0.8, new variant created from the vanilla Block Collection tabs block."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/adventures/bali-surf-camp"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-10T13:55:00.000Z",
+    "notes": "doc (non-xwalk) project: moveInstrumentation import/calls removed (not exported by scripts/scripts.js here); toClassName retained from scripts/aem.js. JS class names renamed from base 'tabs-list'/'tabs-panel'/'tabs-tab' to 'tabs-adventure-list'/'tabs-adventure-panel'/'tabs-adventure-tab' to match the renamed CSS."
+  }
+}

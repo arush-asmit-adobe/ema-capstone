@@ -1,0 +1,48 @@
+{
+  "variantName": "carousel-mini",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-08-10T13:55:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+    "originPage": "WKND adventure detail page (Bali Surf Camp)",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "masthead-gallery",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image only per slide (no overlaid heading/description/CTA)",
+    "slides": 1,
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "adventure/trip detail page mastheads",
+      "full-width image galleries with prev/next + dot indicators and NO overlay text",
+      "in-page photo carousels where the image is the only content"
+    ],
+    "notSuitableFor": [
+      "home/landing hero carousels with overlaid heading + CTA (use carousel-hero)",
+      "slides that must be populated dynamically from a query index (carousel-hero does that)",
+      "text-only rotating content"
+    ]
+  },
+  "similarityEvaluation": {
+    "comparedAgainst": "carousel-hero",
+    "score": 0.35,
+    "threshold": 0.8,
+    "decision": "create-new",
+    "reason": "carousel-hero (base=carousel) is the only existing carousel variant. It is DARK (colorScheme dark vs light here → miss), full-bleed HERO with overlaid heading+description+CTA per slide, and destructively replaces authored slides with entries fetched from carousel-index.json. This adventure masthead is LIGHT and image-ONLY (no overlay, authored images, no dynamic injection). Purpose (hero vs masthead-gallery) and image/content structure differ; density matches. Weighted score well below the 0.8 reuse threshold, so a new image-only variant was created from the vanilla Block Collection carousel."
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/adventures/bali-surf-camp"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-10T13:55:00.000Z",
+    "notes": "doc (non-xwalk) project: fetchPlaceholders and moveInstrumentation imports removed (not exported by scripts/aem.js or scripts/scripts.js here); slide-control aria labels use plain literals. JS class names renamed from base 'carousel-*' to 'carousel-mini-*'. Renders authored slides as-is (unlike carousel-hero's carousel-index.json injection). Prev/next controls only appear when >1 slide is authored."
+  }
+}
