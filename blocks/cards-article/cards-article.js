@@ -237,7 +237,11 @@ export default async function decorate(block) {
   }
 
   try {
-    const resp = await fetch(QUERY_INDEX);
+    // Revalidate against the server rather than serving the browser's cached
+    // copy (the index is sent with max-age=7200); this ensures freshly
+    // published index fields — e.g. category/featured — are picked up promptly
+    // so the category tabs build without waiting on the browser cache to expire.
+    const resp = await fetch(QUERY_INDEX, { cache: 'no-cache' });
     if (!resp.ok) throw new Error(`query-index ${resp.status}`);
     const json = await resp.json();
 
