@@ -101,13 +101,13 @@ header .nav-lang-wrap.is-open .nav-lang-caret {
   transform: translateY(1px) rotate(225deg);
 }
 
-/* ---- language dropdown panel ---- */
+/* ---- language dropdown panel (matches WKND source: 360px, compact rows) ---- */
 header .nav-lang-menu {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: 30;
-  width: 320px;
+  width: 360px;
   max-height: 80vh;
   overflow-y: auto;
   background-color: #202020;
@@ -121,58 +121,62 @@ header .nav-lang-menu[hidden] {
   display: none;
 }
 
-/* one country per row: flag + (name over locale codes) */
+/* one country per row — the flag sits in the 45px left inset (source layout) */
 header .nav-lang-country {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid #3a3a3a;
+  position: relative;
+  padding: 8px 0 15px 45px;
+  border-bottom: 1px solid #696969;
 }
 
 header .nav-lang-country:last-child {
   border-bottom: 0;
 }
 
+/* flag: 25px wide, 12px from the left edge, vertically centered */
 header .nav-lang-menu-flag {
-  flex: 0 0 auto;
-  width: 30px;
-  height: 20px;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 25px;
+  height: auto;
   display: block;
 }
 
 header .nav-lang-menu-flag svg {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 header .nav-lang-country-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: block;
 }
 
 header .nav-lang-country-name {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  display: block;
+  margin: 0 0 5px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: normal;
   text-transform: uppercase;
-  color: #b0b0b0;
+  color: #ebebeb;
 }
 
 header .nav-lang-locales {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 15px;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
 header .nav-lang-menu a.nav-lang-locale:any-link {
-  color: var(--background-color);
+  color: #f7f7f7;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-decoration: none;
 }
 
