@@ -1,0 +1,53 @@
+/*
+ * breadcrumb-adventure — "ADVENTURES ▸ <Page Name>" trail above the adventure
+ * masthead. Matches the WKND source: single row, 14px uppercase #202020, the
+ * Adventures link in semibold, the current page in regular weight, separated by
+ * a small yellow right-pointing triangle.
+ */
+
+.breadcrumb-adventure .breadcrumb-adventure-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.breadcrumb-adventure .breadcrumb-adventure-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #202020;
+}
+
+/* "Adventures" link — semibold, matching the source */
+.breadcrumb-adventure .breadcrumb-adventure-item a {
+  color: #202020;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.breadcrumb-adventure .breadcrumb-adventure-item a:hover {
+  text-decoration: underline;
+}
+
+/* current page — regular weight, not a link */
+.breadcrumb-adventure .breadcrumb-adventure-item-active {
+  font-weight: 400;
+}
+
+/* yellow right-pointing triangle separator before the current page */
+.breadcrumb-adventure .breadcrumb-adventure-item-active::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 0 10px 0 12px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #ffea00;
+}

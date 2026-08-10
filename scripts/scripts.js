@@ -62,6 +62,29 @@ function buildShareStoryAutoBlock(main) {
 }
 
 /**
+ * On adventure DETAIL pages, inject the "Adventures › <Page Name>" breadcrumb
+ * above the masthead. Detail pages live at /adventures/<slug> (deeper than the
+ * adventures listing) and render an H1 page title. The page name is read from
+ * the H1, so no authored content is needed.
+ * @param {Element} main The container element
+ */
+function buildAdventureBreadcrumbAutoBlock(main) {
+  const path = window.location.pathname
+    .replace(/^\/content/, '')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '');
+  // e.g. /us/en/adventures/bali-surf-camp → detail; /us/en/adventures → listing
+  const isDetail = /\/adventures\/[^/]+$/.test(path);
+  if (!isDetail) return;
+  if (main.querySelector('.breadcrumb-adventure')) return; // already present
+
+  const section = document.createElement('div');
+  section.className = 'section breadcrumb-adventure-section';
+  section.append(buildBlock('breadcrumb-adventure', { elems: [] }));
+  main.prepend(section);
+}
+
+/**
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {
@@ -122,6 +145,7 @@ function buildAutoBlocks(main) {
     }
     buildWidgetAutoBlocks(main);
     buildShareStoryAutoBlock(main);
+    buildAdventureBreadcrumbAutoBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
