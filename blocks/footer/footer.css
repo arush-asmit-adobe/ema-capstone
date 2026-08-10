@@ -52,12 +52,19 @@ footer .footer-nav a:any-link {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: color 0.15s ease;
+  cursor: pointer;
 }
 
+/* Hover/focus: underline only — keep the same color (source behavior). */
 footer .footer-nav a:hover,
 footer .footer-nav a:focus-visible {
-  color: #ffea00;
+  color: #ebebeb;
+  text-decoration: underline;
+}
+
+/* Active section: stays underlined while on that page or its sub-pages. */
+footer .footer-nav a.footer-nav-active {
+  text-decoration: underline;
 }
 
 /* follow us + social icons */

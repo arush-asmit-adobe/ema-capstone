@@ -35,6 +35,24 @@ function buildBrand() {
   return brand;
 }
 
+/**
+ * True when the current page is `href` or one of its sub-pages. Compares the
+ * current path (stripped of the local `/content` preview prefix, a trailing
+ * `.html`, and any trailing slash) against the nav item's section path, so the
+ * section link stays highlighted across all of its detail pages (e.g. the
+ * Magazine link is active on /magazine and every /magazine/<article>).
+ * @param {string} href the nav item's section path
+ * @returns {boolean}
+ */
+function isActiveSection(href) {
+  const path = window.location.pathname
+    .replace(/^\/content/, '')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '');
+  const section = href.replace(/\/$/, '');
+  return path === section || path.startsWith(`${section}/`);
+}
+
 function buildNav() {
   const nav = document.createElement('nav');
   nav.className = 'footer-nav';
@@ -45,6 +63,11 @@ function buildNav() {
     const a = document.createElement('a');
     a.href = item.href;
     a.textContent = item.label;
+    // Keep the current section underlined while on that page or its sub-pages.
+    if (isActiveSection(item.href)) {
+      a.classList.add('footer-nav-active');
+      a.setAttribute('aria-current', 'page');
+    }
     li.append(a);
     ul.append(li);
   });
