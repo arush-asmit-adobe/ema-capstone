@@ -36,7 +36,8 @@ header .nav-utility {
   text-transform: uppercase;
 }
 
-header .nav-utility a:any-link {
+header .nav-utility a:any-link,
+header .nav-utility .nav-lang {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -45,8 +46,30 @@ header .nav-utility a:any-link {
   text-decoration: none;
 }
 
-header .nav-utility a:hover {
-  color: #ffea00;
+/* Sign In + language toggle keep their color on hover (source behavior). */
+header .nav-utility a:hover,
+header .nav-utility a:focus-visible,
+header .nav-utility .nav-lang:hover,
+header .nav-utility .nav-lang:focus-visible {
+  color: var(--background-color);
+}
+
+/* language toggle button — unstyled, inherits the utility-bar look */
+header .nav-lang-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+header .nav-utility button.nav-lang {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
 }
 
 header .nav-lang-flag {
@@ -56,7 +79,13 @@ header .nav-lang-flag {
   flex: 0 0 auto;
 }
 
-/* down chevron next to EN-US */
+header .nav-lang-flag svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* down chevron next to EN-US — flips up when the menu is open */
 header .nav-lang-caret {
   display: inline-block;
   width: 7px;
@@ -65,6 +94,99 @@ header .nav-lang-caret {
   border-right: 1.5px solid currentcolor;
   border-bottom: 1.5px solid currentcolor;
   transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+header .nav-lang-wrap.is-open .nav-lang-caret {
+  transform: translateY(1px) rotate(225deg);
+}
+
+/* ---- language dropdown panel ---- */
+header .nav-lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: #202020;
+  color: var(--background-color);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 25%);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+header .nav-lang-menu[hidden] {
+  display: none;
+}
+
+/* one country per row: flag + (name over locale codes) */
+header .nav-lang-country {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+header .nav-lang-country:last-child {
+  border-bottom: 0;
+}
+
+header .nav-lang-menu-flag {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 20px;
+  display: block;
+}
+
+header .nav-lang-menu-flag svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+header .nav-lang-country-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+header .nav-lang-country-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b0b0b0;
+}
+
+header .nav-lang-locales {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+header .nav-lang-menu a.nav-lang-locale:any-link {
+  color: var(--background-color);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+header .nav-lang-menu a.nav-lang-locale.is-active {
+  text-decoration: underline;
+}
+
+header .nav-lang-menu a.nav-lang-locale:hover,
+header .nav-lang-menu a.nav-lang-locale:focus-visible {
+  text-decoration: underline;
+}
+
+header .nav-lang-sep {
+  color: #6a6a6a;
 }
 
 /* main nav row (shrinks smoothly on scroll) */
