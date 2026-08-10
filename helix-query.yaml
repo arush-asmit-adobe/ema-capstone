@@ -21,6 +21,9 @@ indices:
       template:
         select: head > meta[name="template"]
         value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publication-date"]
+        value: attribute(el, 'content')
       lastModified:
         select: none
         value: parseTimestamp(headers('last-modified'), 'ddd, DD MMM YYYY hh:mm:ss GMT')

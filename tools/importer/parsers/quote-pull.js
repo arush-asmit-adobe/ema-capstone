@@ -9,10 +9,15 @@
  * Quote "with attribution" convention: a 1-column table with the block name in
  * row 1, the quotation in row 2, and the attribution in row 3.
  *
+ * Two source styles map to two block variants:
+ *   - .cmp-text--quote  -> grey callout box   -> "quote-pull"          (default)
+ *   - plain .cmp-text    -> inline blockquote   -> "quote-pull (plain)" (variant)
+ * The variant token is preserved by createBlock as a `plain` class on the block.
+ *
  * Source structure (validated against source.html):
- *   .cmp-text
+ *   .cmp-text[.cmp-text--quote]
  *     <blockquote> … quotation (may contain <b>/<br>) …
- *     <p> … attribution (e.g. bold/italic/underline "noun") …
+ *     <p> … attribution (optional; e.g. bold/italic/underline "noun") …
  */
 export default function parse(element, { document }) {
   const quote = element.querySelector('blockquote');
@@ -28,6 +33,14 @@ export default function parse(element, { document }) {
   if (quote) cells.push([quote]);
   if (attribution) cells.push([attribution]);
 
-  const block = WebImporter.Blocks.createBlock(document, { name: 'quote-pull', cells });
+  // The grey-box style is marked by .cmp-text--quote on the enclosing .text
+  // grid column (NOT on the inner .cmp-text element the parser receives). When
+  // that class is absent, the source rendered a plain inline blockquote.
+  const wrapper = element.closest('.text') || element.parentElement || element;
+  const isGreyBox = element.classList.contains('cmp-text--quote')
+    || (wrapper && wrapper.classList && wrapper.classList.contains('cmp-text--quote'));
+  const name = isGreyBox ? 'quote-pull' : 'quote-pull (plain)';
+
+  const block = WebImporter.Blocks.createBlock(document, { name, cells });
   element.replaceWith(block);
 }

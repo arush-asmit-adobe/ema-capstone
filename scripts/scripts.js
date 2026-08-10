@@ -38,6 +38,30 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
 }
 
 /**
+ * On magazine ARTICLE detail pages, inject the dynamic "Share This Story"
+ * sidebar. Article pages live under /magazine/<slug> (deeper than the magazine
+ * listing itself) and render an article <h1>. The block fetches its list of
+ * related articles from the query index at runtime, so no authored content is
+ * needed. Skips the magazine landing page and any page that isn't an article.
+ * @param {Element} main The container element
+ */
+function buildShareStoryAutoBlock(main) {
+  const path = window.location.pathname
+    .replace(/^\/content/, '')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '');
+  // e.g. /us/en/magazine/arctic-surfing → article; /us/en/magazine → listing
+  const isArticle = /\/magazine\/[^/]+$/.test(path);
+  if (!isArticle) return;
+  if (main.querySelector('.share-story')) return; // already present
+
+  const section = document.createElement('div');
+  section.className = 'section share-story-section';
+  section.append(buildBlock('share-story', { elems: [] }));
+  main.append(section);
+}
+
+/**
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {
@@ -97,6 +121,7 @@ function buildAutoBlocks(main) {
       });
     }
     buildWidgetAutoBlocks(main);
+    buildShareStoryAutoBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

@@ -45,22 +45,28 @@ const PAGE_TEMPLATE = {
       instances: ['.cmp-byline'],
     },
   ],
+  // Section selectors are class/tag-based so they match ANY article in this
+  // template (western-australia, arctic-surfing, …), not page-specific IDs.
+  // The section transformer places an <hr> before each section's first element:
+  //   - section 1 (masthead) is the first section, so it gets no break;
+  //   - section 2 (article body) breaks before the article <h1>, splitting the
+  //     full-width masthead image off into its own section.
   sections: [
     {
       id: 'section-1',
       name: 'Masthead Lead Image',
-      selector: '#image-de01fa9d3f',
+      selector: '.cmp-image',
       style: null,
       blocks: [],
-      defaultContent: ['#image-de01fa9d3f'],
+      defaultContent: ['.cmp-image'],
     },
     {
       id: 'section-2',
       name: 'Article Body',
-      selector: '#container-fc6c2f500a',
+      selector: 'h1',
       style: null,
       blocks: ['quote-pull'],
-      defaultContent: ['#title-6782e190a5', '#title-57a780e4c1', '#title-4fc4680be1', '#title-90a292b7fd', '#title-7b99fe2b49'],
+      defaultContent: ['h1'],
     },
     {
       id: 'section-3',

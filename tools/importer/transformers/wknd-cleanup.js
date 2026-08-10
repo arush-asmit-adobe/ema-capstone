@@ -27,6 +27,25 @@ export default function transform(hookName, element, payload) {
       '#toggleNav',
       '#mobileNav',
     ]);
+
+    // Preserve image captions. Some images carry a visible caption as a
+    // <span class="cmp-image__title"> sibling of the <img> inside .cmp-image
+    // (e.g. san-diego-surf "Gorgeous beach point breaks"). Convert each into an
+    // emphasized paragraph placed right after its image so the caption survives
+    // as authorable content (and can be styled). Done in beforeTransform, ahead
+    // of the <meta>/attribute cleanup below.
+    element.querySelectorAll('.cmp-image .cmp-image__title').forEach((cap) => {
+      const text = (cap.textContent || '').trim();
+      if (!text) { cap.remove(); return; }
+      const wrapper = cap.closest('.cmp-image') || cap.parentElement;
+      const p = element.ownerDocument.createElement('p');
+      const em = element.ownerDocument.createElement('em');
+      em.textContent = text;
+      p.append(em);
+      // place the caption paragraph immediately after the image block
+      wrapper.after(p);
+      cap.remove();
+    });
   }
 
   if (hookName === TransformHook.afterTransform) {

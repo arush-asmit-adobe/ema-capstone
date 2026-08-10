@@ -38,9 +38,9 @@
     "reason": "No existing 'quote' base-block variant exists in this project (prior migrations used carousel, columns, cards, hero, tabs, accordion base blocks only). This article's grey pull-quote callout box (blockquote + one-line attribution) maps 1:1 to the Block Collection 'quote' block's 'Quote (with attribution)' variant, so a first quote variant is created from the vanilla quote block."
   },
   "usage": {
-    "pagesUsing": ["/us/en/magazine/western-australia"],
-    "reuseCount": 1,
-    "lastUsed": "2026-08-10T06:37:00.000Z",
-    "notes": "Definition-style pull-quote 'Wanderlust \\wandelust\\ a strong desire to travel.' with attribution 'noun', mid-body in the Western Australia camper-van article. Vanilla quote JS/CSS scaffolded; visual polish (grey box background) applied later by the design expert."
+    "pagesUsing": ["/us/en/magazine/western-australia", "/us/en/magazine/arctic-surfing"],
+    "reuseCount": 2,
+    "lastUsed": "2026-08-10T08:54:00.000Z",
+    "notes": "Definition-style pull-quote 'Wanderlust \\wandelust\\ a strong desire to travel.' with attribution 'noun', mid-body in the Western Australia camper-van article. Vanilla quote JS/CSS scaffolded; visual polish (grey box background) applied later by the design expert. REUSED on the Arctic Surfing magazine article for its in-body pull-quote (#text-9c38dac643): '\"When rare sunrays pierce through the low clouds, the scenery revelas its vibrancy\"'. Arctic's quote is a strict subset - quotation only, NO attribution row and a plain .cmp-text (no .cmp-text--quote grey box) in the source - but the DOM shape is identical, matched by the same article-page selector '.cmp-text:has(blockquote)', the block's optional-attribution branch handles the missing attribution gracefully, and the block CSS renders the same grey callout on both pages. Similarity ~0.9 (purpose/density/image-pattern match; colorScheme unified by the block; structure a subset). Well above the 0.8 reuse threshold - no new variant created."
   }
 }

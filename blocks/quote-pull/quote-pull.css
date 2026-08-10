@@ -1,95 +1,11 @@
 /* ============================================================
-   Magazine article page layout.
-   The article lives in one section (.quote-pull-container, which also
-   carries .cards-profile-container). A preceding plain .section holds the
-   full-width masthead lead image. Scope article-wide rules to the page via
-   main:has(.quote-pull) so other pages using these blocks are unaffected.
+   Pull-quote block. Only the quote element itself is styled here — the
+   article-page layout and typography live in share-story.css (which loads on
+   every article, since the Share This Story sidebar is auto-injected), so
+   quote-less articles are styled too.
    ============================================================ */
 
-/* ---- reading column: center the article body at a comfortable measure ---- */
-main:has(.quote-pull) > .section > div {
-  max-width: 840px;
-}
-
-/* masthead lead image: wider than the reading column, full and edge-clean */
-main:has(.quote-pull) > .section:first-of-type {
-  margin: 0 0 24px;
-}
-
-main:has(.quote-pull) > .section:first-of-type > div {
-  max-width: 1200px;
-  padding: 0;
-}
-
-/* ---- article headings ---- */
-.quote-pull-container .default-content-wrapper h1 {
-  margin: 27px 0 14px;
-  font-family: georgia, 'Times New Roman', times, serif;
-  font-weight: 400;
-  font-size: 40px;
-  line-height: 1.2;
-  color: #202020;
-}
-
-/* author byline heading (H4 under the title) */
-.quote-pull-container .default-content-wrapper h4 {
-  margin: 0 0 21px;
-  font-family: var(--body-font-family);
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.4;
-  text-transform: uppercase;
-  color: #202020;
-}
-
-/* section headings (underlined H2) */
-.quote-pull-container .default-content-wrapper h2 {
-  margin: 27px 0 14px;
-  padding-bottom: 20px;
-  font-family: georgia, 'Times New Roman', times, serif;
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 1.2;
-  color: #202020;
-  position: relative;
-}
-
-.quote-pull-container .default-content-wrapper h2::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 84px;
-  height: 2px;
-  background-color: #ffea00;
-}
-
-/* body paragraphs: 18px with generous leading. Scoped with main:has() so it
-   out-specifies the About Us cards-profile-container p rule (this section is
-   both .quote-pull-container AND .cards-profile-container). */
-main:has(.quote-pull) .quote-pull-container .default-content-wrapper p {
-  margin: 0 0 14px;
-  font-size: 18px;
-  line-height: 2.5;
-  text-align: left;
-  color: #202020;
-}
-
-/* in-body images span the reading column */
-.quote-pull-container .default-content-wrapper picture {
-  display: block;
-  line-height: 0;
-  margin: 8px 0;
-}
-
-.quote-pull-container .default-content-wrapper picture img {
-  width: 100%;
-  display: block;
-}
-
-/* ============================================================
-   Pull-quote callout — grey box with serif quotation + attribution
-   ============================================================ */
+/* ---- grey callout box: serif quotation + attribution ---- */
 .quote-pull {
   margin: 18px 0;
   padding: 24px 28px;
@@ -137,15 +53,33 @@ main:has(.quote-pull) .quote-pull-container .default-content-wrapper p {
   padding-right: 0.5ch;
 }
 
-/* masthead lead image fills its (wider) section container at ~16:9 */
-main:has(.quote-pull) > .section:first-of-type picture {
-  display: block;
-  line-height: 0;
+/* ---- plain variant: inline blockquote (no grey callout box) ----
+   Some articles (e.g. arctic-surfing) author the quote as a plain .cmp-text
+   rather than the .cmp-text--quote grey box. The parser emits "quote-pull
+   (plain)" -> .quote-pull.plain for those, rendered as indented body text. */
+.quote-pull.plain {
+  margin: 18px 0;
+  padding: 0;
+  background-color: transparent;
 }
 
-main:has(.quote-pull) > .section:first-of-type img {
-  width: 100%;
-  aspect-ratio: 1136 / 639;
-  object-fit: cover;
-  display: block;
+.quote-pull.plain blockquote {
+  margin: 0 40px;
+}
+
+.quote-pull.plain blockquote .quote-pull-quotation {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: 1.5;
+  color: #202020;
+}
+
+/* the plain quote text already carries literal quote marks — don't add curly ones */
+.quote-pull.plain blockquote .quote-pull-quotation > :first-child {
+  text-indent: 0;
+}
+
+.quote-pull.plain blockquote .quote-pull-quotation p:first-child::before,
+.quote-pull.plain blockquote .quote-pull-quotation p:last-child::after {
+  content: none;
 }

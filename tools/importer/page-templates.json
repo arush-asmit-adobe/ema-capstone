@@ -316,7 +316,9 @@
     {
       "name": "article-page",
       "urls": [
-        "https://wknd.site/us/en/magazine/western-australia.html"
+        "https://wknd.site/us/en/magazine/western-australia.html",
+        "https://wknd.site/us/en/magazine/arctic-surfing.html",
+        "https://wknd.site/us/en/magazine/san-diego-surf.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/magazine/western-australia.html",
       "coverageGaps": [],
