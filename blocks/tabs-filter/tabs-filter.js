@@ -107,20 +107,31 @@ function splitList(raw) {
 function readConfig(block) {
   const rows = [...block.children];
   const cellText = (row) => (row ? (row.textContent || '').trim() : '');
-  const pathFrom = (row) => {
-    if (!row) return '';
-    const link = row.querySelector('a[href]');
-    return (link ? link.getAttribute('href') : row.textContent || '').trim();
+  const rowHref = (row) => {
+    const link = row && row.querySelector('a[href]');
+    return link ? (link.getAttribute('href') || '').trim() : '';
   };
-  // Identify the path row (contains a link or a value that looks like a path);
-  // the other row holds the labels.
-  let labels = [];
+  const looksPath = (v) => !!v && !/\s/.test(v) && /^(https?:\/\/|\/)/.test(v);
+
+  // Scan every row rather than assuming fixed positions: EDS may or may not
+  // strip the block-name header row, so the path can land in row 1 or row 2.
+  // The path row is whichever row carries a link/text that looks like a path;
+  // the labels row is the first comma-separated, non-path text row.
   let path = '';
-  if (rows.length >= 2) {
-    labels = splitList(cellText(rows[0]));
-    path = pathFrom(rows[1]);
-  } else if (rows.length === 1) {
-    path = pathFrom(rows[0]);
+  let labels = [];
+  rows.forEach((row) => {
+    const href = rowHref(row);
+    const text = cellText(row);
+    if (!path && (looksPath(href) || looksPath(text))) {
+      path = looksPath(href) ? href : text;
+    } else if (!labels.length && text && text.includes(',')) {
+      labels = splitList(text);
+    }
+  });
+  // Fallbacks: single cell = the path; labels optional.
+  if (!path && rows.length) {
+    const last = rows[rows.length - 1];
+    path = rowHref(last) || cellText(last);
   }
   return { labels, path };
 }
