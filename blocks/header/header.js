@@ -246,6 +246,76 @@ function buildSections() {
   return sections;
 }
 
+// Live-search config (matches the AEM Core Components search in the source:
+// start searching after 3 chars, show up to 5 page results in a dropdown).
+const SEARCH_INDEX = '/query-index.json';
+const SEARCH_MIN_LENGTH = 3;
+const SEARCH_RESULTS_SIZE = 5;
+let searchIndexPromise;
+
+/**
+ * Fetch the site's query index once and cache it. Each row is a page with a
+ * title, description and path — the data the header search matches against.
+ * @returns {Promise<object[]>}
+ */
+function loadSearchIndex() {
+  if (!searchIndexPromise) {
+    searchIndexPromise = fetch(SEARCH_INDEX)
+      .then((resp) => {
+        if (!resp.ok) throw new Error(`status ${resp.status}`);
+        return resp.json();
+      })
+      .then((json) => (Array.isArray(json && json.data) ? json.data : []))
+      .catch((e) => {
+        // eslint-disable-next-line no-console
+        console.warn('nav-search: could not load search index —', e.message);
+        return [];
+      });
+  }
+  return searchIndexPromise;
+}
+
+/**
+ * Resolve a page path for the current environment: the local preview serves
+ * pages under a /content prefix; production serves them at the root. Drops a
+ * trailing `.html`.
+ * @param {string} rawPath
+ * @returns {string}
+ */
+function resolveSearchHref(rawPath) {
+  const clean = (rawPath || '').trim().replace(/\.html($|[?#])/, '$1');
+  if (!clean || !clean.startsWith('/') || clean.startsWith('/content/')) return clean;
+  return window.location.pathname.startsWith('/content/') ? `/content${clean}` : clean;
+}
+
+/**
+ * Rank pages matching `query` (case-insensitive, title first then description),
+ * capped at SEARCH_RESULTS_SIZE — mirroring the source's result list.
+ * @param {object[]} pages
+ * @param {string} query
+ * @returns {object[]}
+ */
+function searchPages(pages, query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < SEARCH_MIN_LENGTH) return [];
+  const titleHits = [];
+  const otherHits = [];
+  pages.forEach((page) => {
+    if (!page.path || !page.title) return;
+    const title = `${page.title}`.toLowerCase();
+    if (title.includes(q)) titleHits.push(page);
+    else if (`${page.description || ''}`.toLowerCase().includes(q)) otherHits.push(page);
+  });
+  return [...titleHits, ...otherHits].slice(0, SEARCH_RESULTS_SIZE);
+}
+
+/**
+ * Build the header search (functional live-autocomplete, matching the source):
+ * typing 3+ characters shows a dropdown of up to 5 matching pages; clicking a
+ * result (or Enter on the highlighted one) navigates to that page; a clear (×)
+ * button and Escape reset the field.
+ * @returns {HTMLDivElement}
+ */
 function buildTools() {
   const tools = document.createElement('div');
   tools.className = 'nav-tools';
@@ -253,18 +323,116 @@ function buildTools() {
   const form = document.createElement('form');
   form.className = 'nav-search';
   form.setAttribute('role', 'search');
-  form.addEventListener('submit', (e) => e.preventDefault());
 
-  const label = document.createElement('label');
-  label.className = 'nav-search-icon';
-  label.setAttribute('aria-hidden', 'true');
+  const icon = document.createElement('span');
+  icon.className = 'nav-search-icon';
+  icon.setAttribute('aria-hidden', 'true');
 
   const input = document.createElement('input');
-  input.type = 'search';
-  input.placeholder = 'SEARCH';
+  input.type = 'text';
+  input.className = 'nav-search-input';
+  input.placeholder = 'Search';
   input.setAttribute('aria-label', 'Search');
+  input.setAttribute('role', 'combobox');
+  input.setAttribute('aria-autocomplete', 'list');
+  input.setAttribute('aria-expanded', 'false');
+  input.autocomplete = 'off';
 
-  form.append(label, input);
+  const clear = document.createElement('button');
+  clear.type = 'button';
+  clear.className = 'nav-search-clear';
+  clear.setAttribute('aria-label', 'Clear');
+  clear.hidden = true;
+
+  const results = document.createElement('div');
+  results.className = 'nav-search-results';
+  results.setAttribute('role', 'listbox');
+  results.setAttribute('aria-label', 'Search results');
+  results.hidden = true;
+
+  let activeIndex = -1; // keyboard-highlighted result
+
+  const closeResults = () => {
+    results.hidden = true;
+    results.textContent = '';
+    input.setAttribute('aria-expanded', 'false');
+    activeIndex = -1;
+  };
+
+  const setActive = (idx) => {
+    const items = [...results.querySelectorAll('.nav-search-item')];
+    if (!items.length) return;
+    activeIndex = (idx + items.length) % items.length;
+    items.forEach((el, i) => el.setAttribute('aria-selected', String(i === activeIndex)));
+  };
+
+  const render = (matches) => {
+    results.textContent = '';
+    if (!matches.length) { closeResults(); return; }
+    matches.forEach((page) => {
+      const item = document.createElement('a');
+      item.className = 'nav-search-item';
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', 'false');
+      item.href = resolveSearchHref(page.path);
+      const title = document.createElement('span');
+      title.className = 'nav-search-item-title';
+      title.textContent = page.title;
+      item.append(title);
+      results.append(item);
+    });
+    results.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+    activeIndex = -1;
+  };
+
+  const runSearch = async () => {
+    const query = input.value;
+    clear.hidden = !query;
+    if (query.trim().length < SEARCH_MIN_LENGTH) { closeResults(); return; }
+    const pages = await loadSearchIndex();
+    // input may have changed while the index loaded — re-check current value
+    if (input.value !== query) return;
+    render(searchPages(pages, query));
+  };
+
+  input.addEventListener('input', runSearch);
+  input.addEventListener('focus', () => { if (input.value.trim().length >= SEARCH_MIN_LENGTH) runSearch(); });
+
+  input.addEventListener('keydown', (e) => {
+    const items = [...results.querySelectorAll('.nav-search-item')];
+    if (e.key === 'ArrowDown' && items.length) {
+      e.preventDefault();
+      setActive(activeIndex + 1);
+    } else if (e.key === 'ArrowUp' && items.length) {
+      e.preventDefault();
+      setActive(activeIndex - 1);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const target = activeIndex >= 0 ? items[activeIndex] : items[0];
+      if (target) window.location.href = target.getAttribute('href');
+    } else if (e.key === 'Escape') {
+      closeResults();
+    }
+  });
+
+  clear.addEventListener('click', () => {
+    input.value = '';
+    clear.hidden = true;
+    closeResults();
+    input.focus();
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const first = results.querySelector('.nav-search-item');
+    if (first) window.location.href = first.getAttribute('href');
+  });
+
+  // Close the dropdown when focus/click leaves the search.
+  document.addEventListener('click', (e) => { if (!form.contains(e.target)) closeResults(); });
+
+  form.append(icon, input, clear, results);
   tools.append(form);
   return tools;
 }
