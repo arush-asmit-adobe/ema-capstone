@@ -115,3 +115,23 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* ---- section chrome: the "Current Adventures" heading above this block ----
+   Matches the source: serif heading with a short yellow underline accent. */
+.tabs-filter-container .default-content-wrapper h2 {
+  margin: 0 0 40px;
+  padding-bottom: 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  position: relative;
+}
+
+.tabs-filter-container .default-content-wrapper h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 88px;
+  height: 4px;
+  background-color: #ffea00;
+}
