@@ -1,0 +1,117 @@
+/* ---- category tab list ---- */
+.tabs-filter .tabs-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
+  margin-bottom: 32px;
+}
+
+.tabs-filter .tabs-filter-tab {
+  flex: 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #202020;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tabs-filter .tabs-filter-tab[aria-selected='true'] {
+  background-color: #202020;
+  color: #fff;
+  cursor: default;
+}
+
+.tabs-filter .tabs-filter-tab:hover,
+.tabs-filter .tabs-filter-tab:focus-visible {
+  background-color: #202020;
+  color: #fff;
+}
+
+/* ---- card grid ---- */
+.tabs-filter > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 14px;
+}
+
+.tabs-filter > ul > li[hidden] {
+  display: none;
+}
+
+.tabs-filter > ul > li {
+  min-width: 0;
+  background-color: var(--background-color);
+}
+
+.tabs-filter .tabs-filter-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tabs-filter .tabs-filter-card-link:focus-visible {
+  outline: 2px solid #202020;
+  outline-offset: 2px;
+}
+
+.tabs-filter .tabs-filter-card-image {
+  line-height: 0;
+}
+
+.tabs-filter > ul > li img {
+  width: 100%;
+  aspect-ratio: 13 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.tabs-filter .tabs-filter-card-body {
+  margin: 0;
+  padding-top: 8px;
+}
+
+.tabs-filter .tabs-filter-card-body h3 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: #202020;
+}
+
+.tabs-filter .tabs-filter-card-body p {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #696969;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (width >= 600px) {
+  .tabs-filter > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .tabs-filter > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

@@ -1,15 +1,19 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-/**
- * Author-editable data sheets feeding this block, keyed by the section heading.
- * Each is a spreadsheet in the content source: one row per person. Authors add
- * or remove a row (no code, no page) and the matching section updates.
- * "Our Contributors" -> contributors.json, "WKND Guides" -> guides.json.
+/*
+ * Cards Profile — dynamic contributor/guide profile grid.
+ *
+ * Authoring contract (matches the reference doc): a 2-data-row block whose
+ * cells hold ONLY a type label and a path to a data sheet, e.g.
+ *   | Cards Profile                        |
+ *   | Contributor                          |
+ *   | /us/en/about-us/contributors.json    |
+ * Row 1 is a human label ("Contributor" / "Guide"), row 2 is the sheet path.
+ * The block fetches that sheet (one row per person: name, role, image and
+ * facebook/twitter/instagram links) and renders a profile card per row.
+ * Authors add or remove a person by editing the sheet — never this document.
+ * Profiles have no detail page, so cards are not wrapped in a link.
  */
-const SHEETS = [
-  { match: /our contributors/i, path: '/us/en/data/contributors.json' },
-  { match: /wknd guides/i, path: '/us/en/data/guides.json' },
-];
 
 // Inline SVG glyphs for the supported social platforms (currentColor-driven).
 const SOCIAL_ICONS = {
@@ -19,45 +23,43 @@ const SOCIAL_ICONS = {
 };
 
 /**
- * Resolve a data-sheet path for the current environment. The local preview
- * serves content under a /content prefix; production serves it at the root.
+ * Resolve a data-sheet/query-index path to fetch. JSON resources (sheets and
+ * query indexes) are served at their clean path in every environment — unlike
+ * HTML pages, they are NOT under the local preview's /content prefix — so the
+ * authored path is used as-is (root/relative resolved against the location).
  * @param {string} path
  * @returns {string}
  */
 function resolveSheet(path) {
-  return window.location.pathname.startsWith('/content/') ? `/content${path}` : path;
+  if (/^https?:\/\//i.test(path)) return path;
+  return new URL(path, window.location.href).href;
+}
+
+/** A value that looks like a fetchable sheet path/URL (not a #social anchor). */
+function looksLikePath(value) {
+  return !!value && !/\s/.test(value) && value.length < 300
+    && /^(https?:\/\/|\/)/.test(value) && /\.json($|[?#])/.test(value);
 }
 
 /**
- * Pick the data sheet for this block based on the heading that precedes it.
- * About Us has two profile grids in the SAME section ("Our Contributors" and
- * "WKND Guides"), rendered as sibling wrappers with a heading wrapper before
- * each. So we walk backwards from this block's wrapper to the nearest previous
- * sibling that contains a heading, rather than taking the section's first
- * heading (which would match both blocks to "Our Contributors").
+ * Read the authored sheet path from the block. Per the reference contract the
+ * path is a data cell (row 1 is a type label like "Contributor"). We take a
+ * path-like authored link's href if present, else a cell whose text looks like
+ * a path. Non-path hrefs (e.g. "#facebook" from legacy authored cards) are
+ * ignored, so those pages fall back to authored rendering. Returns '' when no
+ * path is authored.
  * @param {Element} block
- * @returns {string|null} sheet path, or null if no heading matches
+ * @returns {string}
  */
 function sheetForBlock(block) {
-  const wrapper = block.closest('.cards-profile-wrapper') || block.parentElement;
-  let node = wrapper ? wrapper.previousElementSibling : null;
-  // Walk backwards through preceding siblings. A single wrapper can hold more
-  // than one heading (e.g. "About Us" + "Our Contributors"), and we must not
-  // stop at the wrong one — so test EVERY heading (nearest first) against the
-  // sheet patterns and return the first that matches.
-  while (node) {
-    const headings = node.matches('h1,h2,h3,h4,h5,h6')
-      ? [node]
-      : [...node.querySelectorAll('h1,h2,h3,h4,h5,h6')];
-    // nearest heading to the block first
-    for (let i = headings.length - 1; i >= 0; i -= 1) {
-      const text = headings[i].textContent || '';
-      const entry = SHEETS.find((s) => s.match.test(text));
-      if (entry) return entry.path;
-    }
-    node = node.previousElementSibling;
-  }
-  return null;
+  const link = [...block.querySelectorAll('a[href]')]
+    .map((a) => (a.getAttribute('href') || '').trim())
+    .find(looksLikePath);
+  if (link) return link;
+  const cellText = [...block.querySelectorAll(':scope > div > div')]
+    .map((c) => (c.textContent || '').trim())
+    .find(looksLikePath);
+  return cellText || '';
 }
 
 /**
@@ -178,11 +180,11 @@ function decorateAuthored(block) {
  * loads and decorates the block
  *
  * Each profile grid renders dynamically from an author-editable data sheet
- * chosen by its section heading ("Our Contributors" -> contributors.json,
- * "WKND Guides" -> guides.json): one row per person with name, role, image and
- * facebook/twitter/instagram links. Authors add or remove a row in the sheet
- * and that section updates — no code, no page. Blocks whose heading matches no
- * sheet, or when a sheet is unavailable, fall back to authored block-table
+ * whose path is authored directly in the block (row 2), e.g.
+ * /us/en/about-us/contributors.json: one row per person with name, role, image
+ * and facebook/twitter/instagram links. Authors add or remove a row in the
+ * sheet and that section updates — no code, no page. Blocks with no authored
+ * path, or when the sheet is unavailable, fall back to authored block-table
  * content.
  *
  * @param {Element} block The block element
