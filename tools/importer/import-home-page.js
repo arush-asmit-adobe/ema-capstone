@@ -4,7 +4,7 @@
 // PARSER IMPORTS
 import carouselHeroParser from './parsers/carousel-hero.js';
 import columnsFeaturedParser from './parsers/columns-featured.js';
-import cardsArticleParser from './parsers/cards-article.js';
+import cardsIndexParser from './parsers/cards-index.js';
 import heroBannerParser from './parsers/hero-banner.js';
 
 // TRANSFORMER IMPORTS
@@ -28,7 +28,7 @@ const PAGE_TEMPLATE = {
       instances: ['.teaser.cmp-teaser--featured'],
     },
     {
-      name: 'cards-article',
+      name: 'cards-index',
       instances: ['.cmp-image-list'],
     },
     {
@@ -58,7 +58,7 @@ const PAGE_TEMPLATE = {
       name: 'Recent Articles',
       selector: '#container-9c4899b718 .cmp-image-list',
       style: null,
-      blocks: ['cards-article'],
+      blocks: ['cards-index'],
       defaultContent: ['#title-c2d2b28d00', '#button-2e6d32893a'],
     },
     {
@@ -74,7 +74,7 @@ const PAGE_TEMPLATE = {
       name: 'Where do you want to go? (Adventures Grid)',
       selector: '#container-4d3fed64ff .cmp-image-list',
       style: null,
-      blocks: ['cards-article'],
+      blocks: ['cards-index'],
       defaultContent: ['#title-ca6ac0fe65', '#button-b6562c963d'],
     },
   ],
@@ -84,7 +84,7 @@ const PAGE_TEMPLATE = {
 const parsers = {
   'carousel-hero': carouselHeroParser,
   'columns-featured': columnsFeaturedParser,
-  'cards-article': cardsArticleParser,
+  'cards-index': cardsIndexParser,
   'hero-banner': heroBannerParser,
 };
 

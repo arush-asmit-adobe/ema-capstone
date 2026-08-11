@@ -25,7 +25,7 @@
           ]
         },
         {
-          "name": "cards-article",
+          "name": "cards-index",
           "instances": [
             ".cmp-image-list"
           ]
@@ -64,7 +64,7 @@
           "selector": "#container-9c4899b718 .cmp-image-list",
           "style": null,
           "blocks": [
-            "cards-article"
+            "cards-index"
           ],
           "defaultContent": [
             "#title-c2d2b28d00",
@@ -89,7 +89,7 @@
           "selector": "#container-4d3fed64ff .cmp-image-list",
           "style": null,
           "blocks": [
-            "cards-article"
+            "cards-index"
           ],
           "defaultContent": [
             "#title-ca6ac0fe65",
@@ -114,7 +114,7 @@
           ]
         },
         {
-          "name": "cards-article",
+          "name": "cards-index",
           "instances": [
             ".cmp-image-list"
           ]
@@ -145,7 +145,7 @@
           "selector": ".image-list.list",
           "style": null,
           "blocks": [
-            "cards-article"
+            "cards-index"
           ],
           "defaultContent": [
             "#title-0f80375ce9"
@@ -181,7 +181,7 @@
       ],
       "representativeUrl": "https://wknd.site/us/en/adventures.html",
       "coverageGaps": [],
-      "description": "WKND adventures landing page: intro hero with overlaid white card, and a Current Adventures listing rendered via the unified cards-article block (category tabs rebuilt at runtime from the query index).",
+      "description": "WKND adventures landing page: intro hero with overlaid white card, and a Current Adventures listing rendered via the unified cards-index block (category tabs rebuilt at runtime from the query index).",
       "blocks": [
         {
           "name": "hero-intro",
@@ -190,7 +190,7 @@
           ]
         },
         {
-          "name": "cards-article",
+          "name": "cards-index",
           "instances": [
             ".cmp-tabs"
           ]
@@ -215,7 +215,7 @@
           "selector": ".cmp-tabs",
           "style": null,
           "blocks": [
-            "cards-article"
+            "cards-index"
           ],
           "defaultContent": [
             "#title-dffa0ffaf3"

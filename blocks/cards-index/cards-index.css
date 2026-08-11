@@ -1,0 +1,195 @@
+/* ---- category tab list (Current Adventures) ---- */
+.cards-index .cards-index-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
+  margin-bottom: 32px;
+}
+
+.cards-index .cards-index-tab {
+  flex: 0 0 auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #202020;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.cards-index .cards-index-tab[aria-selected='true'] {
+  background-color: #202020;
+  color: #fff;
+  cursor: default;
+}
+
+.cards-index .cards-index-tab:hover,
+.cards-index .cards-index-tab:focus-visible {
+  background-color: #202020;
+  color: #fff;
+}
+
+.cards-index > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 14px;
+}
+
+.cards-index > ul > li[hidden] {
+  display: none;
+}
+
+.cards-index > ul > li {
+  min-width: 0;
+  background-color: var(--background-color);
+  cursor: pointer;
+}
+
+/* whole-card clickable: the single title link is stretched over the entire
+   card via ::after, giving one focusable tab-stop for the whole surface */
+.cards-index > ul > li.cards-index-card-clickable {
+  position: relative;
+}
+
+.cards-index .cards-index-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* visible focus ring on the whole card when the stretched link is focused */
+.cards-index .cards-index-card-link:focus-visible::after {
+  outline: 2px solid #202020;
+  outline-offset: 2px;
+}
+
+/* image */
+.cards-index .cards-index-card-image {
+  line-height: 0;
+}
+
+.cards-index > ul > li img {
+  width: 100%;
+  aspect-ratio: 13 / 10; /* source card images are 260x200 (1.30) */
+  object-fit: cover;
+  display: block;
+}
+
+/* card body */
+.cards-index .cards-index-card-body {
+  margin: 0;
+  padding-top: 8px;
+}
+
+/* title */
+.cards-index .cards-index-card-body h3 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: #202020;
+}
+
+.cards-index .cards-index-card-body h3 a:any-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* description — single line, truncated with ellipsis */
+.cards-index .cards-index-card-body p {
+  margin: 16px 0 0; /* source spaces the description 16px below the title */
+  font-size: 14px;
+  line-height: 1.5;
+  color: #696969;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (width >= 600px) {
+  .cards-index > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-index > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---- section chrome (heading + "All Articles" button) ---- */
+
+/* section heading with a short yellow underline accent */
+.cards-index-container .default-content-wrapper h2 {
+  margin: 0 0 40px;
+  padding-bottom: 20px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  position: relative;
+}
+
+.cards-index-container .default-content-wrapper h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 88px;
+  height: 4px;
+  background-color: #ffea00;
+}
+
+/* sub-heading (e.g. "Where do you want to go?") — serif, smaller, no accent */
+.cards-index-container .default-content-wrapper h3 {
+  margin: 0 0 24px;
+  font-family: georgia, 'Times New Roman', times, serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #202020;
+}
+
+/* standalone "All Articles" CTA rendered as a smaller yellow button */
+.cards-index-container .default-content-wrapper > p:last-child {
+  margin-top: 40px;
+}
+
+.cards-index-container .default-content-wrapper .cards-index-cta {
+  display: inline-block;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 12px 20px;
+  background-color: #ffea00;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Exclude the description paragraph from the whole-card click target: lift it
+   above the stretched-link overlay so clicks on the description text are not
+   routed through the card link (image + title remain clickable). Placed last
+   so its higher specificity does not descend below the base `p` rules. */
+.cards-index > ul > li.cards-index-card-clickable .cards-index-card-body p {
+  position: relative;
+  z-index: 2;
+}

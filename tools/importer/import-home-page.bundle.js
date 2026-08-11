@@ -97,11 +97,13 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/cards-article.js
+  // tools/importer/parsers/cards-index.js
   function parse3(element, { document }) {
-    let items = Array.from(element.querySelectorAll(".cmp-image-list__item"));
+    const activePanel = element.querySelector(".cmp-tabs__tabpanel--active");
+    const scope = activePanel || element;
+    let items = Array.from(scope.querySelectorAll(".cmp-image-list__item"));
     if (!items.length) {
-      items = Array.from(element.querySelectorAll(":scope > li, .cmp-image-list__item-content"));
+      items = Array.from(scope.querySelectorAll(":scope > li, .cmp-image-list__item-content"));
     }
     const cells = [];
     items.forEach((item) => {
@@ -130,7 +132,7 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document, { name: "cards-article", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "cards-index", cells });
     element.replaceWith(block);
   }
 
@@ -167,6 +169,20 @@ var CustomImportScript = (() => {
         "#toggleNav",
         "#mobileNav"
       ]);
+      element.querySelectorAll(".cmp-image .cmp-image__title").forEach((cap) => {
+        const text = (cap.textContent || "").trim();
+        if (!text) {
+          cap.remove();
+          return;
+        }
+        const wrapper = cap.closest(".cmp-image") || cap.parentElement;
+        const p = element.ownerDocument.createElement("p");
+        const em = element.ownerDocument.createElement("em");
+        em.textContent = text;
+        p.append(em);
+        wrapper.after(p);
+        cap.remove();
+      });
     }
     if (hookName === TransformHook.afterTransform) {
       WebImporter.DOMUtils.remove(element, [
@@ -242,7 +258,7 @@ var CustomImportScript = (() => {
         instances: [".teaser.cmp-teaser--featured"]
       },
       {
-        name: "cards-article",
+        name: "cards-index",
         instances: [".cmp-image-list"]
       },
       {
@@ -272,7 +288,7 @@ var CustomImportScript = (() => {
         name: "Recent Articles",
         selector: "#container-9c4899b718 .cmp-image-list",
         style: null,
-        blocks: ["cards-article"],
+        blocks: ["cards-index"],
         defaultContent: ["#title-c2d2b28d00", "#button-2e6d32893a"]
       },
       {
@@ -288,7 +304,7 @@ var CustomImportScript = (() => {
         name: "Where do you want to go? (Adventures Grid)",
         selector: "#container-4d3fed64ff .cmp-image-list",
         style: null,
-        blocks: ["cards-article"],
+        blocks: ["cards-index"],
         defaultContent: ["#title-ca6ac0fe65", "#button-b6562c963d"]
       }
     ]
@@ -296,7 +312,7 @@ var CustomImportScript = (() => {
   var parsers = {
     "carousel-hero": parse,
     "columns-featured": parse2,
-    "cards-article": parse3,
+    "cards-index": parse3,
     "hero-banner": parse4
   };
   var transformers = [

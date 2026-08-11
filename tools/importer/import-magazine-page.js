@@ -3,7 +3,7 @@
 
 // PARSER IMPORTS
 import columnsFeaturedParser from './parsers/columns-featured.js';
-import cardsArticleParser from './parsers/cards-article.js';
+import cardsIndexParser from './parsers/cards-index.js';
 import cardsPromoParser from './parsers/cards-promo.js';
 
 // TRANSFORMER IMPORTS
@@ -23,7 +23,7 @@ const PAGE_TEMPLATE = {
       instances: ['.teaser.cmp-teaser--featured'],
     },
     {
-      name: 'cards-article',
+      name: 'cards-index',
       instances: ['.cmp-image-list'],
     },
     {
@@ -45,7 +45,7 @@ const PAGE_TEMPLATE = {
       name: 'All Articles',
       selector: '.image-list.list',
       style: null,
-      blocks: ['cards-article'],
+      blocks: ['cards-index'],
       defaultContent: ['#title-0f80375ce9'],
     },
     {
@@ -70,7 +70,7 @@ const PAGE_TEMPLATE = {
 // PARSER REGISTRY - Map parser names to functions
 const parsers = {
   'columns-featured': columnsFeaturedParser,
-  'cards-article': cardsArticleParser,
+  'cards-index': cardsIndexParser,
   'cards-promo': cardsPromoParser,
 };
 

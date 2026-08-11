@@ -61,7 +61,7 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/cards-article.js
+  // tools/importer/parsers/cards-index.js
   function parse2(element, { document }) {
     const activePanel = element.querySelector(".cmp-tabs__tabpanel--active");
     const scope = activePanel || element;
@@ -96,7 +96,7 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document, { name: "cards-article", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "cards-index", cells });
     element.replaceWith(block);
   }
 
@@ -195,11 +195,11 @@ var CustomImportScript = (() => {
       },
       {
         // Current Adventures: the full listing lives in the active "All" tab
-        // panel. Map that single panel to the unified cards-article block so the
+        // panel. Map that single panel to the unified cards-index block so the
         // adventures grid uses the same card component (and dynamic query-index
         // rendering) as the homepage/magazine grids. The category tabs are
         // rebuilt at runtime from the query index's `category` field.
-        name: "cards-article",
+        name: "cards-index",
         instances: [".cmp-tabs"]
       }
     ],
@@ -217,14 +217,14 @@ var CustomImportScript = (() => {
         name: "Current Adventures",
         selector: ".cmp-tabs",
         style: null,
-        blocks: ["cards-article"],
+        blocks: ["cards-index"],
         defaultContent: ["#title-dffa0ffaf3"]
       }
     ]
   };
   var parsers = {
     "hero-intro": parse,
-    "cards-article": parse2
+    "cards-index": parse2
   };
   var transformers = [
     transform,

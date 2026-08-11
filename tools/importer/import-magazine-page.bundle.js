@@ -67,11 +67,13 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/cards-article.js
+  // tools/importer/parsers/cards-index.js
   function parse2(element, { document }) {
-    let items = Array.from(element.querySelectorAll(".cmp-image-list__item"));
+    const activePanel = element.querySelector(".cmp-tabs__tabpanel--active");
+    const scope = activePanel || element;
+    let items = Array.from(scope.querySelectorAll(".cmp-image-list__item"));
     if (!items.length) {
-      items = Array.from(element.querySelectorAll(":scope > li, .cmp-image-list__item-content"));
+      items = Array.from(scope.querySelectorAll(":scope > li, .cmp-image-list__item-content"));
     }
     const cells = [];
     items.forEach((item) => {
@@ -100,7 +102,7 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document, { name: "cards-article", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "cards-index", cells });
     element.replaceWith(block);
   }
 
@@ -147,6 +149,20 @@ var CustomImportScript = (() => {
         "#toggleNav",
         "#mobileNav"
       ]);
+      element.querySelectorAll(".cmp-image .cmp-image__title").forEach((cap) => {
+        const text = (cap.textContent || "").trim();
+        if (!text) {
+          cap.remove();
+          return;
+        }
+        const wrapper = cap.closest(".cmp-image") || cap.parentElement;
+        const p = element.ownerDocument.createElement("p");
+        const em = element.ownerDocument.createElement("em");
+        em.textContent = text;
+        p.append(em);
+        wrapper.after(p);
+        cap.remove();
+      });
     }
     if (hookName === TransformHook.afterTransform) {
       WebImporter.DOMUtils.remove(element, [
@@ -218,7 +234,7 @@ var CustomImportScript = (() => {
         instances: [".teaser.cmp-teaser--featured"]
       },
       {
-        name: "cards-article",
+        name: "cards-index",
         instances: [".cmp-image-list"]
       },
       {
@@ -240,7 +256,7 @@ var CustomImportScript = (() => {
         name: "All Articles",
         selector: ".image-list.list",
         style: null,
-        blocks: ["cards-article"],
+        blocks: ["cards-index"],
         defaultContent: ["#title-0f80375ce9"]
       },
       {
@@ -263,7 +279,7 @@ var CustomImportScript = (() => {
   };
   var parsers = {
     "columns-featured": parse,
-    "cards-article": parse2,
+    "cards-index": parse2,
     "cards-promo": parse3
   };
   var transformers = [
