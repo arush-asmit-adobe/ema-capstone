@@ -37,13 +37,22 @@
   color: #fff;
 }
 
+/* Mobile-first: a horizontal-scroll carousel of fixed 260px cards, matching
+   the WKND source's mobile card rows (swipe sideways). At >=600px this becomes
+   a 2-up grid and >=900px a 4-up grid (see media queries below). */
 .cards-article > ul {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px 14px;
+  padding: 0 0 8px;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cards-article > ul::-webkit-scrollbar {
+  display: none;
 }
 
 .cards-article > ul > li[hidden] {
@@ -54,6 +63,10 @@
   min-width: 0;
   background-color: var(--background-color);
   cursor: pointer;
+
+  /* carousel item: fixed 260px card that snaps into place */
+  flex: 0 0 260px;
+  scroll-snap-align: start;
 }
 
 /* whole-card clickable: the single title link is stretched over the entire
@@ -122,8 +135,16 @@
 }
 
 @media (width >= 600px) {
+  /* tablet+: back to a wrapping grid (no horizontal scroll) */
   .cards-article > ul {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 32px 14px;
+    overflow-x: visible;
+  }
+
+  .cards-article > ul > li {
+    flex: 0 1 auto;
   }
 }
 

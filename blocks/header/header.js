@@ -299,29 +299,67 @@ function enableShrinkOnScroll(header) {
 }
 
 /**
- * Build the mobile hamburger toggle. On small screens (see CSS) it shows and
- * expands/collapses the nav sections + tools into a panel below the bar. It is
- * hidden on desktop, where the nav renders inline.
- * @param {Element} nav the <nav> element whose open state it toggles
+ * Build the mobile hamburger toggle (left of the brand on mobile; hidden on
+ * desktop). It opens the off-canvas drawer built by buildMobileDrawer().
  * @returns {HTMLButtonElement}
  */
-function buildHamburger(nav) {
+function buildHamburger() {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'nav-hamburger';
   button.setAttribute('aria-label', 'Open navigation');
   button.setAttribute('aria-expanded', 'false');
-  button.setAttribute('aria-controls', 'nav');
+  button.setAttribute('aria-controls', 'nav-drawer');
   button.innerHTML = '<span class="nav-hamburger-icon" aria-hidden="true"></span>';
+  return button;
+}
 
-  button.addEventListener('click', () => {
-    const open = nav.classList.toggle('is-nav-open');
-    button.setAttribute('aria-expanded', String(open));
-    button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
-    document.body.classList.toggle('nav-open', open);
+/**
+ * Build the mobile off-canvas drawer + scrim, matching the WKND source: a dark
+ * panel that slides in from the LEFT with the nav links (Home first), and a
+ * translucent scrim behind it. Returns the elements plus open/close controls.
+ * @returns {{drawer: Element, scrim: Element, open: Function, close: Function}}
+ */
+function buildMobileDrawer() {
+  const scrim = document.createElement('div');
+  scrim.className = 'nav-drawer-scrim';
+  scrim.hidden = true;
+
+  const drawer = document.createElement('nav');
+  drawer.className = 'nav-drawer';
+  drawer.id = 'nav-drawer';
+  drawer.setAttribute('aria-label', 'Mobile navigation');
+
+  const ul = document.createElement('ul');
+  // The source lists Home first, then the primary sections.
+  [{ label: 'Home', href: '/us/en' }, ...NAV_ITEMS].forEach((item) => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = item.label;
+    if (isActive(item.href)) a.classList.add('is-active');
+    li.append(a);
+    ul.append(li);
+  });
+  drawer.append(ul);
+
+  const close = () => {
+    document.body.classList.remove('nav-drawer-open');
+    scrim.hidden = true;
+  };
+  const open = () => {
+    document.body.classList.add('nav-drawer-open');
+    scrim.hidden = false;
+  };
+
+  scrim.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
   });
 
-  return button;
+  return {
+    drawer, scrim, open, close,
+  };
 }
 
 /**
@@ -338,25 +376,38 @@ export default async function decorate(block) {
   const brand = buildBrand();
   const sections = buildSections();
   const tools = buildTools();
-  const hamburger = buildHamburger(nav);
+  const hamburger = buildHamburger();
+  const drawerParts = buildMobileDrawer();
 
-  // Order: brand, hamburger (mobile), then the collapsible sections + tools.
-  nav.append(brand, hamburger, sections, tools);
+  // Order: hamburger (mobile, left), brand, then the inline desktop nav.
+  nav.append(hamburger, brand, sections, tools);
 
-  // Close the mobile nav after following a section link.
-  sections.querySelectorAll('button').forEach((b) => {
-    b.addEventListener('click', () => {
-      nav.classList.remove('is-nav-open');
+  // Hamburger opens the off-canvas drawer.
+  hamburger.addEventListener('click', () => {
+    const isOpen = document.body.classList.contains('nav-drawer-open');
+    if (isOpen) {
+      drawerParts.close();
+    } else {
+      drawerParts.open();
+    }
+    const nowOpen = document.body.classList.contains('nav-drawer-open');
+    hamburger.setAttribute('aria-expanded', String(nowOpen));
+    hamburger.setAttribute('aria-label', nowOpen ? 'Close navigation' : 'Open navigation');
+  });
+
+  // Close the drawer after a link is followed.
+  drawerParts.drawer.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      drawerParts.close();
       hamburger.setAttribute('aria-expanded', 'false');
       hamburger.setAttribute('aria-label', 'Open navigation');
-      document.body.classList.remove('nav-open');
     });
   });
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(utility, nav);
-  block.append(navWrapper);
+  block.append(navWrapper, drawerParts.scrim, drawerParts.drawer);
 
   // Sign In modal — opens when the utility-bar "Sign In" is clicked
   const signInModal = buildSignInModal();

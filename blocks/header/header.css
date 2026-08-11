@@ -543,48 +543,104 @@ header .signin-rule {
   background-color: #696969;
 }
 
-/* ---- mobile nav collapse (placed last so it overrides the base
-   .nav-sections / .nav-tools display rules above) ---- */
+/* ---- off-canvas mobile drawer (source pattern) ---- */
+
+/* dark panel that slides in from the LEFT */
+header .nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 40;
+  width: 275px;
+  max-width: 82vw;
+  padding: 24px 0;
+  background-color: #202020;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+  overflow-y: auto;
+  visibility: hidden;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-drawer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header .nav-drawer a:any-link {
+  display: block;
+  padding: 0 14px;
+  height: 44px;
+  line-height: 44px;
+  color: #ebebeb;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+header .nav-drawer a.is-active,
+header .nav-drawer a:hover,
+header .nav-drawer a:focus-visible {
+  color: #ffea00;
+}
+
+/* translucent scrim behind the drawer */
+header .nav-drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  background-color: rgb(0 0 0 / 45%);
+}
+
+header .nav-drawer-scrim[hidden] {
+  display: none;
+}
+
+/* open state (class set on <body>) */
+body.nav-drawer-open .nav-drawer {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+body.nav-drawer-open {
+  overflow: hidden;
+}
+
+/* ---- mobile header bar (placed last so it overrides the base nav rules) ---- */
 @media (width < 900px) {
+  /* hide the inline desktop nav on mobile — the drawer replaces it */
   header nav .nav-sections,
   header nav .nav-tools {
     display: none;
-    flex: 0 0 100%;
-    width: 100%;
   }
 
-  header nav.is-nav-open .nav-sections,
-  header nav.is-nav-open .nav-tools {
-    display: flex;
+  /* center the brand between the hamburger (left) and the utility bar */
+  header nav {
+    justify-content: center;
+    position: relative;
   }
 
-  header nav.is-nav-open .nav-sections {
-    justify-content: flex-start;
-    margin-top: 8px;
+  header nav .nav-brand {
+    margin-left: 0;
   }
 
-  header nav.is-nav-open .nav-sections ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    width: 100%;
+  header .nav-hamburger {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
   }
+}
 
-  header nav.is-nav-open .nav-sections li {
-    width: 100%;
-  }
-
-  header nav.is-nav-open .nav-sections button {
-    width: 100%;
-    text-align: left;
-    padding: 14px 0;
-  }
-
-  header nav.is-nav-open .nav-tools {
-    margin: 8px 0 12px;
-  }
-
-  header nav.is-nav-open .nav-search {
-    width: 100%;
+@media (width >= 900px) {
+  /* desktop: the drawer + scrim never show */
+  header .nav-drawer,
+  header .nav-drawer-scrim {
+    display: none;
   }
 }
