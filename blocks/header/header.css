@@ -209,6 +209,68 @@ header nav {
   transition: min-height 0.3s ease, padding 0.3s ease;
 }
 
+/* ---- mobile hamburger toggle (hidden on desktop) ---- */
+header .nav-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+/* three-bar icon drawn with the element + its two pseudo-elements */
+header .nav-hamburger-icon,
+header .nav-hamburger-icon::before,
+header .nav-hamburger-icon::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: currentcolor;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+header .nav-hamburger-icon {
+  position: relative;
+}
+
+header .nav-hamburger-icon::before {
+  position: absolute;
+  top: -7px;
+}
+
+header .nav-hamburger-icon::after {
+  position: absolute;
+  top: 7px;
+}
+
+/* animate to an X while the mobile nav is open */
+header nav.is-nav-open .nav-hamburger-icon {
+  background-color: transparent;
+}
+
+header nav.is-nav-open .nav-hamburger-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+header nav.is-nav-open .nav-hamburger-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+/* Mobile (<900px): brand + hamburger on the top row; sections and tools
+   collapse into a stacked panel revealed when .is-nav-open. The mobile
+   collapse rules live at the END of this file so they override the base
+   .nav-sections / .nav-tools display rules (media queries add no specificity,
+   so source order decides). */
+
 @media (width >= 900px) {
   header nav {
     gap: 0 32px;
@@ -219,6 +281,11 @@ header nav {
 
   header.header-wrapper.is-scrolled nav {
     min-height: 72px;
+  }
+
+  /* desktop: no hamburger, inline nav */
+  header .nav-hamburger {
+    display: none;
   }
 }
 
@@ -474,4 +541,50 @@ header .signin-rule {
   margin: 40px 0 0;
   border: 0;
   background-color: #696969;
+}
+
+/* ---- mobile nav collapse (placed last so it overrides the base
+   .nav-sections / .nav-tools display rules above) ---- */
+@media (width < 900px) {
+  header nav .nav-sections,
+  header nav .nav-tools {
+    display: none;
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  header nav.is-nav-open .nav-sections,
+  header nav.is-nav-open .nav-tools {
+    display: flex;
+  }
+
+  header nav.is-nav-open .nav-sections {
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  header nav.is-nav-open .nav-sections ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+  }
+
+  header nav.is-nav-open .nav-sections li {
+    width: 100%;
+  }
+
+  header nav.is-nav-open .nav-sections button {
+    width: 100%;
+    text-align: left;
+    padding: 14px 0;
+  }
+
+  header nav.is-nav-open .nav-tools {
+    margin: 8px 0 12px;
+  }
+
+  header nav.is-nav-open .nav-search {
+    width: 100%;
+  }
 }

@@ -151,4 +151,16 @@ footer .footer-legal a:focus-visible {
   footer .footer-follow {
     margin-left: 0;
   }
+
+  /* stack the footer nav links so a row of 4 uppercase items can't overflow
+     the narrow viewport */
+  footer .footer-nav {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  footer .footer-nav ul {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
 }

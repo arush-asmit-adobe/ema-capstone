@@ -299,6 +299,32 @@ function enableShrinkOnScroll(header) {
 }
 
 /**
+ * Build the mobile hamburger toggle. On small screens (see CSS) it shows and
+ * expands/collapses the nav sections + tools into a panel below the bar. It is
+ * hidden on desktop, where the nav renders inline.
+ * @param {Element} nav the <nav> element whose open state it toggles
+ * @returns {HTMLButtonElement}
+ */
+function buildHamburger(nav) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'nav-hamburger';
+  button.setAttribute('aria-label', 'Open navigation');
+  button.setAttribute('aria-expanded', 'false');
+  button.setAttribute('aria-controls', 'nav');
+  button.innerHTML = '<span class="nav-hamburger-icon" aria-hidden="true"></span>';
+
+  button.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-nav-open');
+    button.setAttribute('aria-expanded', String(open));
+    button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    document.body.classList.toggle('nav-open', open);
+  });
+
+  return button;
+}
+
+/**
  * loads and decorates the header (WKND site chrome)
  * @param {Element} block The header block element
  */
@@ -312,8 +338,20 @@ export default async function decorate(block) {
   const brand = buildBrand();
   const sections = buildSections();
   const tools = buildTools();
+  const hamburger = buildHamburger(nav);
 
-  nav.append(brand, sections, tools);
+  // Order: brand, hamburger (mobile), then the collapsible sections + tools.
+  nav.append(brand, hamburger, sections, tools);
+
+  // Close the mobile nav after following a section link.
+  sections.querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => {
+      nav.classList.remove('is-nav-open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open navigation');
+      document.body.classList.remove('nav-open');
+    });
+  });
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
