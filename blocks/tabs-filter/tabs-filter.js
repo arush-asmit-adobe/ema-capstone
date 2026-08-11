@@ -40,27 +40,57 @@ function resolveDetailHref(rawPath) {
   return window.location.pathname.startsWith('/content/') ? `/content${clean}` : clean;
 }
 
+/** Resolve after `ms` milliseconds. */
+function delay(ms) {
+  return new Promise((resolve) => { setTimeout(resolve, ms); });
+}
+
 /**
- * Fetch + parse an index once per URL (cached promise -> `data` array).
+ * Fetch + parse an index with a few retries. A freshly (re)published sheet can
+ * briefly return a CDN-edge 404 (negative cache) right when the block decorates
+ * eagerly; a single attempt would then leave the grid empty until the next full
+ * reload. So retry a few times with backoff, revalidating against the server,
+ * before giving up. Returns the parsed `data` array (empty only if every
+ * attempt fails).
+ * @param {string} url
+ * @param {number} attempts
+ * @returns {Promise<object[]>}
+ */
+async function fetchIndex(url, attempts = 4) {
+  let lastErr;
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      const resp = await fetch(url, { cache: 'no-cache' });
+      if (!resp.ok) throw new Error(`status ${resp.status}`);
+      // eslint-disable-next-line no-await-in-loop
+      const json = await resp.json();
+      return Array.isArray(json && json.data) ? json.data : [];
+    } catch (e) {
+      lastErr = e;
+      // eslint-disable-next-line no-await-in-loop
+      if (i < attempts - 1) await delay(400 * (i + 1));
+    }
+  }
+  // eslint-disable-next-line no-console
+  console.warn(`tabs-filter: could not load index ${url} —`, lastErr && lastErr.message);
+  return [];
+}
+
+/**
+ * Load an index once per URL. Only a SUCCESSFUL (non-empty) result is cached,
+ * so a transient failure never sticks for the rest of the page's life.
  * @param {string} url
  * @returns {Promise<object[]>}
  */
 function loadIndex(url) {
-  if (!indexCache.has(url)) {
-    const promise = fetch(url)
-      .then((resp) => {
-        if (!resp.ok) throw new Error(`status ${resp.status}`);
-        return resp.json();
-      })
-      .then((json) => (Array.isArray(json && json.data) ? json.data : []))
-      .catch((e) => {
-        // eslint-disable-next-line no-console
-        console.warn(`tabs-filter: could not load index ${url} —`, e.message);
-        return [];
-      });
-    indexCache.set(url, promise);
-  }
-  return indexCache.get(url);
+  if (indexCache.has(url)) return indexCache.get(url);
+  const promise = fetchIndex(url).then((data) => {
+    if (!data.length) indexCache.delete(url); // don't cache an empty/failed load
+    return data;
+  });
+  indexCache.set(url, promise);
+  return promise;
 }
 
 /** Split a raw "Cycling, Travel" value into a trimmed list. */
