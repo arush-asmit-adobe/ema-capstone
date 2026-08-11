@@ -41,19 +41,23 @@ function resolveSheet(path) {
 function sheetForBlock(block) {
   const wrapper = block.closest('.cards-profile-wrapper') || block.parentElement;
   let node = wrapper ? wrapper.previousElementSibling : null;
-  let text = '';
+  // Walk backwards through preceding siblings. A single wrapper can hold more
+  // than one heading (e.g. "About Us" + "Our Contributors"), and we must not
+  // stop at the wrong one — so test EVERY heading (nearest first) against the
+  // sheet patterns and return the first that matches.
   while (node) {
-    const heading = node.matches('h1,h2,h3,h4,h5,h6')
-      ? node
-      : node.querySelector('h1,h2,h3,h4,h5,h6');
-    if (heading && heading.textContent.trim()) {
-      text = heading.textContent;
-      break;
+    const headings = node.matches('h1,h2,h3,h4,h5,h6')
+      ? [node]
+      : [...node.querySelectorAll('h1,h2,h3,h4,h5,h6')];
+    // nearest heading to the block first
+    for (let i = headings.length - 1; i >= 0; i -= 1) {
+      const text = headings[i].textContent || '';
+      const entry = SHEETS.find((s) => s.match.test(text));
+      if (entry) return entry.path;
     }
     node = node.previousElementSibling;
   }
-  const entry = SHEETS.find((s) => s.match.test(text));
-  return entry ? entry.path : null;
+  return null;
 }
 
 /**
