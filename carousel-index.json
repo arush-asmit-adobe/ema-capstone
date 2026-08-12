@@ -16,14 +16,16 @@
       "description": "From the hippie beaches of Ocean Beach to the ritzy shores of La Jolla and everywhere in between. Discover the San Diego surf scene.",
       "image": "https://wknd.site/us/en/_jcr_content/root/container/carousel/item_1572035298405.coreimg.jpeg/1660323822923/beach-walking.jpeg",
       "imageAlt": "Young lady with surfboard going to the ocean at surf spot",
-      "cta": "Full Article"
+      "cta": "Full Article",
+      "ctaHref": "/us/en/magazine/san-diego-surf"
     },
     {
       "title": "Downhill Skiing Wyoming",
       "description": "A skiers paradise far from crowds and close to nature with terrain so vast it appears uncharted.",
       "image": "https://wknd.site/us/en/_jcr_content/root/container/carousel/teaser.coreimg.jpeg/1660323784078/adobestock-185234795.jpeg",
       "imageAlt": "A skier does action skiing at the Rolle Pass in the Dolomites, Italy.",
-      "cta": "View Trip"
+      "cta": "View Trip",
+      "ctaHref": "/us/en/adventures/downhill-skiing-wyoming"
     }
   ],
   ":type": "sheet"
