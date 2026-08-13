@@ -20,20 +20,34 @@ header .nav-wrapper {
   position: relative;
 }
 
-/* utility bar (black strip: sign in + language) — stays intact on scroll */
+/* utility bar (black strip: sign in + language) — stays intact on scroll.
+   The strip spans the full viewport width (source: #202020, 25px tall); its
+   content is centered in the same 1136px column as the nav below it, so
+   Sign In + language align to the content's right edge. */
 header .nav-utility {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 25px;
+  background-color: #202020;
+  color: #ebebeb;
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+/* centered content column inside the black strip (matches the nav column) */
+header .nav-utility-inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 32px;
-  height: 32px;
-  padding: 0 40px;
-  background-color: var(--text-color);
-  color: var(--background-color);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 header .nav-utility a:any-link,
@@ -41,8 +55,8 @@ header .nav-utility .nav-lang {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--background-color);
-  font-weight: 600;
+  color: #ebebeb;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -51,7 +65,7 @@ header .nav-utility a:hover,
 header .nav-utility a:focus-visible,
 header .nav-utility .nav-lang:hover,
 header .nav-utility .nav-lang:focus-visible {
-  color: var(--background-color);
+  color: #ebebeb;
 }
 
 /* language toggle button — unstyled, inherits the utility-bar look */
@@ -201,7 +215,7 @@ header nav {
   justify-content: space-between;
   gap: 0 24px;
   margin: auto;
-  max-width: 1264px;
+  max-width: 1200px;
   min-height: var(--nav-height);
   padding: 16px 24px;
   font-family: var(--body-font-family);
@@ -274,13 +288,13 @@ header nav.is-nav-open .nav-hamburger-icon::after {
 @media (width >= 900px) {
   header nav {
     gap: 0 32px;
-    min-height: 104px;
+    min-height: 168px;
     padding: 0 32px;
     flex-wrap: nowrap;
   }
 
   header.header-wrapper.is-scrolled nav {
-    min-height: 72px;
+    min-height: 96px;
   }
 
   /* desktop: no hamburger, inline nav */
@@ -289,14 +303,14 @@ header nav.is-nav-open .nav-hamburger-icon::after {
   }
 }
 
-/* brand / WKND wordmark */
+/* brand / WKND wordmark (sits flush at the content column's left edge) */
 header .nav-brand {
   font-family: var(--heading-font-family);
   font-size: 50px;
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1;
-  margin-left: 48px;
+  margin-left: 0;
   transition: font-size 0.3s ease;
 }
 
@@ -329,7 +343,7 @@ header nav .nav-sections ul {
   margin: 0;
   padding-left: 0;
   display: flex;
-  gap: 40px;
+  gap: 0;
   align-items: center;
 }
 
@@ -337,13 +351,13 @@ header nav .nav-sections button {
   margin: 0;
   border: 0;
   border-radius: 0;
-  padding: 14px 18px;
+  padding: 15px 17px;
   background-color: transparent;
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -357,20 +371,21 @@ header nav .nav-sections button:focus-visible {
   color: var(--text-color);
 }
 
-/* tools (search) */
+/* tools (search) — source: light translucent fill, 40px tall */
 header nav .nav-search {
+  box-sizing: border-box;
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 28px;
-  padding: 0 12px;
-  background-color: var(--light-color);
+  height: 32px;
+  padding: 0 14px;
+  background-color: rgb(235 235 235 / 54%);
   transition: height 0.3s ease;
 }
 
 header.header-wrapper.is-scrolled nav .nav-search {
-  height: 26px;
+  height: 30px;
 }
 
 /* magnifying-glass icon (matches source: filled ring + handle at bottom-left) */
@@ -392,15 +407,15 @@ header nav .nav-search-input {
   border: 0;
   background: transparent;
   padding: 0;
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  letter-spacing: normal;
   text-transform: uppercase;
-  color: var(--dark-color);
+  color: var(--text-color);
   outline: none;
 }
 
 header nav .nav-search-input::placeholder {
-  color: var(--dark-color);
+  color: var(--text-color);
   opacity: 0.7;
   text-transform: uppercase;
 }
@@ -483,7 +498,16 @@ header nav .nav-search-item-title {
 
 @media (width >= 900px) {
   header nav .nav-search {
-    width: 150px;
+    width: 166px;
+  }
+
+  /* Utility bar (desktop): the language toggle occupies a 166px slot aligned to
+     the content's right edge — the same column as the search box below it — so
+     the flag + EN-US left-align above the search and Sign In sits to its left
+     (matches the source's utility-bar orientation). */
+  header .nav-utility .nav-lang-wrap {
+    width: 166px;
+    justify-content: flex-start;
   }
 }
 
@@ -701,7 +725,8 @@ body.nav-drawer-open {
 @media (width < 900px) {
   /* Utility bar (black strip): Sign In pinned left, language toggle right —
      matching the source's mobile layout (space-between, tighter padding). */
-  header .nav-utility {
+  header .nav-utility-inner {
+    max-width: none;
     justify-content: space-between;
     padding: 0 16px;
   }

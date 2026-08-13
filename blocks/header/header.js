@@ -191,7 +191,13 @@ function buildUtilityBar() {
   });
 
   lang.append(toggle, menu);
-  utility.append(signIn, lang);
+
+  // Center the utility content in the same column as the nav below it, so
+  // Sign In + language align to the content's right edge (source layout).
+  const inner = document.createElement('div');
+  inner.className = 'nav-utility-inner';
+  inner.append(signIn, lang);
+  utility.append(inner);
   return { utility, signIn };
 }
 
