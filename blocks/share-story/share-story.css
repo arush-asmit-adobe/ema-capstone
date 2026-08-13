@@ -181,11 +181,16 @@ main:has(.share-story) .cards-profile-container .default-content-wrapper p:has(p
   padding: 8px 16px;
   border-left: 5px solid #ebebeb;
   text-decoration: none;
-  transition: border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.share-story-item:hover {
-  border-left-color: #ffea00;
+/* Hover: the whole item fills yellow and the left accent turns dark (source
+   .cmp-list--upnext behavior). Title/date keep their colors. */
+.share-story-item:hover,
+.share-story-item:focus-visible {
+  background-color: #ffea00;
+  border-left-color: #202020;
+  text-decoration: none;
 }
 
 .share-story-item-title {
