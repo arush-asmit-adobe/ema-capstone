@@ -27,16 +27,18 @@
   background-color: #ffea00;
 }
 
-/* hero image fills the main column at ~3:2 */
+/* Intro image (source): NOT full-bleed — it sits left-aligned at its natural
+   rendition size (≈232px on mobile), well inside the column. The source image
+   is already 3:2, so no crop is needed. Desktop widens it below. */
 .accordion-faq-container .default-content-wrapper picture {
   display: block;
   line-height: 0;
 }
 
 .accordion-faq-container .default-content-wrapper picture img {
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
+  width: 232px;
+  max-width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -165,5 +167,10 @@
   main:has(> .accordion-faq-container) > .section > div {
     max-width: none;
     padding: 0;
+  }
+
+  /* desktop: the intro image fills the main content column (matches source) */
+  .accordion-faq-container .default-content-wrapper picture img {
+    width: 100%;
   }
 }

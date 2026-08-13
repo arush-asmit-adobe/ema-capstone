@@ -102,6 +102,12 @@
   cursor: pointer;
 }
 
+/* the controls nav wraps the <ol> of dots + the prev/next buttons and is the
+   positioning context for the absolutely-placed arrows */
+.carousel-hero nav[aria-label='Carousel Slide Controls'] {
+  position: relative;
+}
+
 .carousel-hero .carousel-hero-slide-indicators {
   position: relative;
   display: flex;
@@ -200,5 +206,53 @@
     max-width: 1400px;
     margin: 0;
     padding: 32px 40px 40px;
+  }
+}
+
+/* Mobile (source): the slide is NOT an overlay. The image is a fixed-height
+   banner on top and the text sits BELOW it, transparent (no white card). The
+   heading is serif and the CTA is a larger yellow button. Scoped to phones so
+   the desktop overlay (>= 600px, above) is untouched. */
+@media (width < 600px) {
+  .carousel-hero .carousel-hero-slide {
+    display: block;
+    min-height: 0;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-image picture {
+    position: static;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-image img {
+    height: 220px;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content {
+    margin: 0;
+    padding: 24px 16px 32px;
+    background-color: transparent;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content h1,
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content h2,
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content h3 {
+    font-family: georgia, 'Times New Roman', times, serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.25;
+    margin: 0 0 9px;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content p:not(:last-child) {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .carousel-hero .carousel-hero-slide .carousel-hero-slide-content .carousel-hero-cta {
+    margin-top: 16px;
+    padding: 14px 35px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: normal;
   }
 }

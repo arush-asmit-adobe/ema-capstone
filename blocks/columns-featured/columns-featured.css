@@ -18,13 +18,15 @@
   display: block;
 }
 
-/* image on top (mobile), text below */
+/* Mobile (source): the grey text panel is on TOP, the image below it. Desktop
+   (@media >= 900px, further down) overrides both orders to place the image left
+   and the text right. */
 .columns-featured > div > div {
-  order: 1;
+  order: 0;
 }
 
 .columns-featured > div > .columns-featured-img-col {
-  order: 0;
+  order: 1;
   padding: 0;
 }
 
