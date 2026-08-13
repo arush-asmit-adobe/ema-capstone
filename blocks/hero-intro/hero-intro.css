@@ -20,18 +20,19 @@
 
 .hero-intro img {
   width: 100%;
-  height: 320px;
+  height: 220px;
   object-fit: cover;
   display: block;
 }
 
-/* white content card overlapping the bottom of the image */
+/* Mobile (source): the intro text sits BELOW the image — no overlapping white
+   card. Transparent background, simple side padding, text spans the column. */
 .hero-intro > div:last-child {
   position: relative;
   z-index: 1;
-  margin: -80px 16px 0;
-  padding: 24px;
-  background-color: var(--background-color);
+  margin: 0;
+  padding: 24px 16px;
+  background-color: transparent;
 }
 
 .hero-intro > div:last-child > div {
@@ -77,12 +78,13 @@
     height: 640px;
   }
 
-  /* the source card is a fixed 1192px wide, centered (image shows on both
-     sides), NOT a full-width card with fixed side margins */
+  /* Desktop (source): a fixed 1192px-wide white card, centered and pulled up
+     to overlap the bottom of the image (image shows on both sides). */
   .hero-intro > div:last-child {
     max-width: 1192px;
     margin: -180px auto 0;
     padding: 0 28px;
+    background-color: var(--background-color);
   }
 
   .hero-intro > div:last-child > div {
