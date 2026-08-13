@@ -84,9 +84,8 @@
 }
 
 @media (width >= 900px) {
-  /* narrow the section inward from both sides to match source */
   .columns-featured {
-    margin: 0 32px;
+    margin: 0;
   }
 
   .columns-featured > div {
@@ -117,5 +116,15 @@
 
   .columns-featured .columns-featured-text-col h2 {
     font-size: 40px;
+  }
+
+  /* Match the source's 1136px content column on the magazine landing page so
+     the "Magazine" H1, the featured block, "All Articles", and the card grid
+     all share the same left edge. Previously the column was 1200px and only the
+     featured block was inset 32px (via its own margin) to reach 232px — leaving
+     the H1 and All Articles 32px further left than the source. Narrowing the
+     column keeps the featured block in place while flush-aligning everything. */
+  main:has(.columns-featured) > .section > div {
+    max-width: 1136px;
   }
 }
