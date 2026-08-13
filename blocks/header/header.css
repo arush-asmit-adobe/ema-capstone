@@ -698,27 +698,48 @@ body.nav-drawer-open {
 
 /* ---- mobile header bar (placed last so it overrides the base nav rules) ---- */
 @media (width < 900px) {
-  /* hide the inline desktop nav on mobile — the drawer replaces it */
-  header nav .nav-sections,
-  header nav .nav-tools {
+  /* Utility bar (black strip): Sign In pinned left, language toggle right —
+     matching the source's mobile layout (space-between, tighter padding). */
+  header .nav-utility {
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+
+  /* hide only the inline desktop section links — the drawer replaces them.
+     The search tools stay visible (the source keeps search in the header). */
+  header nav .nav-sections {
     display: none;
   }
 
-  /* center the brand between the hamburger (left) and the utility bar */
+  /* White bar: hamburger (left) → WKND wordmark → search (pushed to the right),
+     all on ONE row (no wrap), matching the source. */
   header nav {
-    justify-content: center;
-    position: relative;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0 12px;
+    padding: 12px 16px;
   }
 
   header nav .nav-brand {
-    margin-left: 0;
+    margin-left: 4px;
+    font-size: 34px;
   }
 
   header .nav-hamburger {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
+    transform: none;
+    flex: 0 0 auto;
+  }
+
+  /* search sits on the right of the white bar, sized to fit the row */
+  header nav .nav-tools {
+    margin-left: auto;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  header nav .nav-search {
+    width: min(48vw, 190px);
   }
 }
 
