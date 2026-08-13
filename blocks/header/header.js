@@ -211,9 +211,11 @@ function buildBrand() {
 }
 
 /**
- * Whether a nav item points to the page currently being viewed. Handles both
- * the production path (/us/en/magazine) and the local preview path
- * (/content/us/en/magazine[.html]).
+ * Whether a nav item's section is currently being viewed. A section is active
+ * on its own landing page AND on any page beneath it — so a detail page like
+ * /us/en/adventures/bali-surf-camp highlights "Adventures", matching the
+ * source. Handles both the production path (/us/en/adventures) and the local
+ * preview path (/content/us/en/adventures[.html]).
  * @param {string} href
  * @returns {boolean}
  */
@@ -221,7 +223,11 @@ function isActive(href) {
   if (!href || href === '#') return false;
   const path = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
   const target = href.replace(/\.html$/, '').replace(/\/$/, '');
-  return path === target || path === `/content${target}` || path.endsWith(target);
+  // Normalise the local preview's /content prefix off the current path so the
+  // comparison is against clean section paths (e.g. /us/en/adventures).
+  const clean = path.replace(/^\/content/, '');
+  // Active when on the section landing page, or on any descendant page.
+  return clean === target || clean.startsWith(`${target}/`);
 }
 
 function buildSections() {
