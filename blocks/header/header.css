@@ -657,21 +657,22 @@ header .nav-drawer ul {
 header .nav-drawer a:any-link {
   display: block;
   padding: 0 14px;
-  height: 44px;
-  line-height: 44px;
+  height: 45px;
+  line-height: 45px;
   color: #ebebeb;
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
   text-transform: uppercase;
   text-decoration: none;
 }
 
-header .nav-drawer a.is-active,
+/* Source does NOT highlight the current page in the drawer — every item stays
+   the same light-grey. Keep only a subtle hover/focus affordance. */
 header .nav-drawer a:hover,
 header .nav-drawer a:focus-visible {
-  color: #ffea00;
+  color: #fff;
 }
 
 /* translucent scrim behind the drawer */

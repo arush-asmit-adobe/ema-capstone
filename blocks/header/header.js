@@ -499,13 +499,14 @@ function buildMobileDrawer() {
   drawer.setAttribute('aria-label', 'Mobile navigation');
 
   const ul = document.createElement('ul');
-  // The source lists Home first, then the primary sections.
+  // The source lists Home first, then the primary sections. The current page is
+  // intentionally NOT highlighted in the drawer (matches the source), so no
+  // is-active class is applied here.
   [{ label: 'Home', href: '/us/en' }, ...NAV_ITEMS].forEach((item) => {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = item.href;
     a.textContent = item.label;
-    if (isActive(item.href)) a.classList.add('is-active');
     li.append(a);
     ul.append(li);
   });
